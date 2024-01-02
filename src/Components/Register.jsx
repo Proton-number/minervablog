@@ -20,7 +20,7 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 
-function SignUp({ setLoggedIn }) {
+function Register({ setLoggedIn }) {
   const [showLogin, setShowLogin] = useState(true);
   const [signUpEmail, setSignUpEmail] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
@@ -211,4 +211,4 @@ function SignUp({ setLoggedIn }) {
   );
 }
 
-export default SignUp;
+export default Register;
