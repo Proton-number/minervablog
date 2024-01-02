@@ -11,7 +11,7 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
-import { auth } from "/src/config/firebase.jsx";
+import { auth } from "../Config/Firebase";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 

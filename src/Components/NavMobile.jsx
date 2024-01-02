@@ -14,7 +14,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
-import { auth } from "/src/config/firebase.jsx";
+import { auth } from "../Config/Firebase";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 
@@ -33,13 +33,13 @@ function NavMobile({ loggedIn, setLoggedIn }) {
     } catch (err) {
       console.log(err);
     }
-    };
-    
-    const font = createTheme({
-        typography: {
-          fontFamily: "Sevillana, cursive",
-        },
-      });
+  };
+
+  const font = createTheme({
+    typography: {
+      fontFamily: "Sevillana, cursive",
+    },
+  });
 
   return (
     <>
@@ -49,7 +49,7 @@ function NavMobile({ loggedIn, setLoggedIn }) {
         elevation={0}
       >
         <Toolbar>
-        <ThemeProvider theme={font}>
+          <ThemeProvider theme={font}>
             <Typography variant="h3" sx={{ flexGrow: 1 }}>
               menervaBlog
             </Typography>
