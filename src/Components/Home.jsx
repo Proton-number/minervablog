@@ -16,7 +16,7 @@ function Home() {
     },
   });
   return (
-    <Stack>
+    <Stack sx={{ marginTop: { xs: "80px" } }}>
       <Stack
         spacing={{ lg: 40 }}
         direction={{ sm: "row" }}
@@ -24,17 +24,20 @@ function Home() {
       >
         <Box
           component={motion.img}
+          initial={{ opacity: 0, x: 80 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5 }}
           src={img1}
           sx={{
-            width: { sm: "420px", lg: "600px" },
-            height: { sm: "400px", lg: "600px" },
+            width: { xs: "420px", sm: "420px", lg: "620px" },
+            height: { xs: "420px", sm: "400px", lg: "620px" },
           }}
         />
         <Box
           sx={{
             backgroundColor: "hsl(212, 93%, 36%)",
-            height: { sm: "260px", lg: "300px" },
-            width: { sm: "280px", lg: "300px" },
+            height: { xs: "240px", sm: "260px", lg: "300px" },
+            width: { xs: "240px", sm: "280px", lg: "300px" },
             padding: "30px",
             borderRadius: "70% 25% 75% 25% / 67% 25% 25% 25%",
             position: "relative",
@@ -45,9 +48,12 @@ function Home() {
             <Typography
               sx={{
                 position: "absolute",
-                top: "40%",
-                left: "20%",
-                transform: "translate(10%, 10%)",
+                top: { xs: "38%", sm: "40%" },
+                left: { xs: "14%", sm: "20%" },
+                transform: {
+                  xs: '"translate(30%, 30%)"',
+                  sm: "translate(10%, 10%)",
+                },
                 color: "white",
               }}
               variant="h4"
