@@ -4,13 +4,15 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Nav from "./Components/Nav";
 import Home from "./Components/Home";
 import Blogs from "./Components/Blogs";
-import CreateBlog from "./Components/CreateBlog";
 import { Box } from "@mui/material";
 import NavMobile from "./Components/NavMobile";
 import Register from "./Components/Register";
+import SingleBlog from "./Components/SingleBlog";
+import About from "./Components/About";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("loggedIn"));
+
   return (
     <>
       <Box>
@@ -24,8 +26,9 @@ function App() {
               element={<Register setLoggedIn={setLoggedIn} />}
             />
             <Route exact path="/" element={<Home />} />
+            <Route exact path="/singleBlog/:slug" element={<SingleBlog />} />
             <Route exact path="/blog" element={<Blogs />} />
-            <Route exact path="/createBlog" element={<CreateBlog />} />
+            <Route exact path="/about/:authorId" element={<About />} />
           </Routes>
         </Router>
       </Box>

@@ -3,13 +3,12 @@ import {
   Toolbar,
   Typography,
   Stack,
-  Box,
   createTheme,
   ThemeProvider,
   IconButton,
 } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../Config/Firebase";
 import { useNavigate } from "react-router-dom";
@@ -76,14 +75,7 @@ function Nav({ loggedIn, setLoggedIn }) {
                     Blogs
                   </Typography>
                 </Link>
-                <Link
-                  to="/createBlog"
-                  style={{ textDecoration: "none", color: "black" }}
-                >
-                  <Typography variant="h6" sx={{ cursor: "pointer" }}>
-                    CreateBlog
-                  </Typography>
-                </Link>
+
                 <IconButton onClick={logOut}>
                   <LogoutIcon sx={{ color: "black" }} />
                 </IconButton>

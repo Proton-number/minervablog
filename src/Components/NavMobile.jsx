@@ -73,11 +73,11 @@ function NavMobile({ loggedIn, setLoggedIn }) {
           },
         }}
         id="drawer"
-        anchor="right"
+        anchor="top"
         open={isDrawerOpen}
         onClose={() => setisDrawerOpen(false)}
       >
-        <Box width="350px" role="presentation">
+        <Box>
           <Toolbar>
             <IconButton
               edge="start"
@@ -114,14 +114,6 @@ function NavMobile({ loggedIn, setLoggedIn }) {
                 >
                   <Typography variant="h6" sx={{ cursor: "pointer" }}>
                     Blogs
-                  </Typography>
-                </Link>
-                <Link
-                  to="/createBlog"
-                  style={{ textDecoration: "none", color: "white" }}
-                >
-                  <Typography variant="h6" sx={{ cursor: "pointer" }}>
-                    CreateBlog
                   </Typography>
                 </Link>
                 <IconButton onClick={logOut}>
