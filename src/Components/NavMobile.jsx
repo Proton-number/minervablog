@@ -17,6 +17,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../Config/Firebase";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { motion } from "framer-motion";
 
 function NavMobile({ loggedIn, setLoggedIn }) {
   const [isDrawerOpen, setisDrawerOpen] = useState(false);
@@ -44,6 +45,10 @@ function NavMobile({ loggedIn, setLoggedIn }) {
   return (
     <>
       <AppBar
+        component={motion.div}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 3.1, duration: 0.5 }}
         id="mobileNav"
         sx={{ padding: 1.2, backgroundColor: "white", color: "black" }}
         elevation={0}
@@ -68,8 +73,7 @@ function NavMobile({ loggedIn, setLoggedIn }) {
       <Drawer
         PaperProps={{
           sx: {
-            background: "rgba(47,56,76,0.5)",
-            backdropFilter: "blur(19px)",
+            backgroundColor: "hsl(0, 0%, 55%)",
           },
         }}
         id="drawer"
@@ -84,7 +88,7 @@ function NavMobile({ loggedIn, setLoggedIn }) {
               aria-label="close-icon"
               onClick={() => setisDrawerOpen(false)}
             >
-              <CloseIcon fontSize="large" sx={{ color: "black" }} />
+              <CloseIcon fontSize="large" sx={{ color: "white" }} />
             </IconButton>
           </Toolbar>
 
@@ -93,7 +97,11 @@ function NavMobile({ loggedIn, setLoggedIn }) {
             style={{ textAlign: "center", color: "white", padding: "35px" }}
           >
             <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-              <Typography variant="h6" sx={{ cursor: "pointer" }}>
+              <Typography
+                onClick={() => setisDrawerOpen(false)}
+                variant="h6"
+                sx={{ cursor: "pointer" }}
+              >
                 Home
               </Typography>
             </Link>
@@ -102,7 +110,11 @@ function NavMobile({ loggedIn, setLoggedIn }) {
                 to="/signUp"
                 style={{ textDecoration: "none", color: "white" }}
               >
-                <Typography variant="h6" sx={{ cursor: "pointer" }}>
+                <Typography
+                  onClick={() => setisDrawerOpen(false)}
+                  variant="h6"
+                  sx={{ cursor: "pointer" }}
+                >
                   Sign Up
                 </Typography>
               </Link>
@@ -112,7 +124,11 @@ function NavMobile({ loggedIn, setLoggedIn }) {
                   to="/blog"
                   style={{ textDecoration: "none", color: "white" }}
                 >
-                  <Typography variant="h6" sx={{ cursor: "pointer" }}>
+                  <Typography
+                    onClick={() => setisDrawerOpen(false)}
+                    variant="h6"
+                    sx={{ cursor: "pointer" }}
+                  >
                     Blogs
                   </Typography>
                 </Link>

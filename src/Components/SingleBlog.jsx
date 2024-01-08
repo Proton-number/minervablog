@@ -70,7 +70,10 @@ function SingleBlog() {
               component="img"
               src={imageUrl}
               alt={node.alt}
-              sx={{ width: { sm: "450px", lg: "900px" }, height: "auto" }} // Adjust styles as needed
+              sx={{
+                width: { xs: "350px", sm: "450px", lg: "900px" },
+                height: "auto",
+              }} // Adjust styles as needed
             />
           </Box>
         );
@@ -90,9 +93,13 @@ function SingleBlog() {
   return (
     <Stack
       component={motion.div}
-      initial={{ opacity: 0, y: "400px" }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, type:'spring', stiffness: 60 }}
+      initial={{ opacity: 0, scale: 0.5 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{
+        duration: 1,
+        delay: 0.2,
+        ease: [0, 0.71, 0.2, 1.01],
+      }}
       spacing={3}
       sx={{
         padding: {

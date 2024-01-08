@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { bouncy } from "ldrs";
 import { motion } from "framer-motion";
 
+
 function Blogs() {
   const [blogs, setBlogs] = useState(null);
   bouncy.register();
@@ -48,8 +49,9 @@ function Blogs() {
       component={motion.div}
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: .2, duration: 1 }}
+      transition={{ delay: 0.2, duration: 1 }}
     >
+     
       <Grid
         columns={{ lg: 10 }}
         container
@@ -87,7 +89,7 @@ function Blogs() {
                             height: "auto",
                             objectFit: "cover",
                             borderTopLeftRadius: "15px",
-                           borderTopRightRadius:'15px',
+                            borderTopRightRadius: "15px",
                           }}
                           src={blog.mainImage.asset.url}
                           alt={blog.mainImage.alt}

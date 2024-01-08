@@ -6,13 +6,15 @@ import {
   createTheme,
   ThemeProvider,
   IconButton,
+  Box,
 } from "@mui/material";
 import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../Config/Firebase";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { motion } from "framer-motion";
 
 function Nav({ loggedIn, setLoggedIn }) {
   const navigate = useNavigate();
@@ -38,6 +40,10 @@ function Nav({ loggedIn, setLoggedIn }) {
   return (
     <>
       <AppBar
+        component={motion.div}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 3.1, duration: 0.5 }}
         id="desktopNav"
         sx={{ padding: 1.2, backgroundColor: "white", color: "black" }}
         elevation={0}

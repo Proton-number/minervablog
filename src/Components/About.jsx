@@ -56,7 +56,10 @@ function About() {
               component="img"
               src={imageUrl}
               alt={node.alt}
-              sx={{ width: { sm: "450px", lg: "800px" }, height: "auto" }} // Adjust styles as needed
+              sx={{
+                width: { xs: "300px", sm: "450px", lg: "800px" },
+                height: "auto",
+              }} // Adjust styles as needed
             />
           </Box>
         );
@@ -77,12 +80,13 @@ function About() {
       spacing={3}
       sx={{
         padding: {
+          xs: "50px",
           sm: "60px",
           lg: "100px",
         },
         marginTop: {
-          sm: "40px",
-          lg: "",
+          xs: "40px",
+          lg: 0,
         },
       }}
     >
