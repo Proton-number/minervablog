@@ -9,7 +9,7 @@ import {
   TextField,
   Paper,
 } from "@mui/material";
-import loginImg from "/src/images/Outer space-amico.png";
+import loginImg from "/src/images/Mail sent-pana.png";
 import GoogleIcon from "@mui/icons-material/Google";
 import { motion } from "framer-motion";
 import { signInWithPopup } from "firebase/auth";
@@ -27,6 +27,10 @@ function Register({ setLoggedIn }) {
   const [loginEmail, setLoginEmail] = useState("");
   const [signUpPassword, setSignUpPassword] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
+  const [error, setError] = useState({
+    email: false,
+    password: false,
+  });
   const navigate = useNavigate();
   const [loading, isLoading] = useState(true);
 
@@ -52,6 +56,17 @@ function Register({ setLoggedIn }) {
       navigate("/blog");
     } catch (err) {
       console.log(err);
+    }
+    if (signUpEmail.trim() === "" || !signUpEmail.includes("@")) {
+      setError((prevError) => ({ ...prevError, email: true }));
+    } else {
+      setError((prevError) => ({ ...prevError, email: false }));
+    }
+    
+    if (signUpPassword.trim() === "" || signUpPassword.length < 6) {
+      setError((prevError) => ({ ...prevError, password: true }));
+    } else {
+      setError((prevError) => ({ ...prevError, password: false }));
     }
   };
 
@@ -125,13 +140,33 @@ function Register({ setLoggedIn }) {
                       type="email"
                       value={signUpEmail}
                       onChange={(e) => setSignUpEmail(e.target.value)}
+                      error={error.email}
+                      helperText={
+                        error.email ? "Enter a valid email address" : ""
+                      }
                     />
                     <TextField
                       label="Password"
                       type="password"
                       value={signUpPassword}
                       onChange={(e) => setSignUpPassword(e.target.value)}
-                      helperText="Password should be at least 6 characters"
+                      helperText={
+                        error.password ? (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{
+                              opacity: 1,
+                              y: 0,
+                              transition: { duration: 0.25 },
+                            }}
+                          >
+                            Enter a valid Password
+                          </motion.div>
+                        ) : (
+                          "Password should be at least 6 characters"
+                        )
+                      }
+                      error={error.password}
                     />
                     <Button
                       onClick={signUpBtn}
