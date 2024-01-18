@@ -20,7 +20,7 @@
     "@sanity/block-content-to-react": "^3.0.0",
     "@sanity/client": "^6.10.0",
     "@sanity/image-url": "^1.0.2",
-    "@uidotdev/usehooks": "^2.4.1-experimental.1",
+    "@uidotdev/usehooks": "^2.4.1",
     "firebase": "^10.7.1",
     "framer-motion": "^10.16.16",
     "framer-motion-3d": "^10.17.9",

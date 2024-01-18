@@ -1726,10 +1726,10 @@
   resolved "https://registry.yarnpkg.com/@types/webxr/-/webxr-0.5.10.tgz#19c76208ec015ca3f139505e14d94d6b740f518a"
   integrity sha512-n3u5sqXQJhf1CS68mw3Wf16FQ4cRPNBBwdYLFzq3UddiADOim1Pn3Y6PBdDilz1vOJF3ybLxJ8ZEDlLIzrOQZg==
 
-"@uidotdev/usehooks@^2.4.1-experimental.1":
-  version "2.4.1-experimental.1"
-  resolved "https://registry.yarnpkg.com/@uidotdev/usehooks/-/usehooks-2.4.1-experimental.1.tgz#019edbcb042c4b669195fe5a277fc7594a25b33c"
-  integrity sha512-rcDUGS2Cpw6fTkdvYAytK+ej2nW0/ZNTAVvN9Eyj1Fu5XshsZPjnstDCDjkO/J6w7W9cwPWPoj4q4iiYW2seZA==
+"@uidotdev/usehooks@^2.4.1":
+  version "2.4.1"
+  resolved "https://registry.yarnpkg.com/@uidotdev/usehooks/-/usehooks-2.4.1.tgz#4b733eaeae09a7be143c6c9ca158b56cc1ea75bf"
+  integrity sha512-1I+RwWyS+kdv3Mv0Vmc+p0dPYH0DTRAo04HLyXReYBL9AeseDWUJyi4THuksBJcu9F0Pih69Ak150VDnqbVnXg==
 
 "@ungap/structured-clone@^1.2.0":
   version "1.2.0"

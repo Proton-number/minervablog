@@ -164,7 +164,7 @@ function SingleBlog() {
         dataset="production"
         serializers={customSerializers}
       />
-      <Comments/>
+      <Comments blogId={singleBlog._id}/>
     </Stack>
   );
 }
