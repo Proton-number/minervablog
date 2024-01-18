@@ -23,13 +23,19 @@ import { bouncy } from "ldrs";
 
 function Register({ setLoggedIn }) {
   const [showLogin, setShowLogin] = useState(true);
-  const [signUpEmail, setSignUpEmail] = useState("");
-  const [loginEmail, setLoginEmail] = useState("");
-  const [signUpPassword, setSignUpPassword] = useState("");
-  const [loginPassword, setLoginPassword] = useState("");
+  const [signUp, setSignUp] = useState({
+    email: "",
+    password: "",
+  });
+  const [login, setLogin] = useState({
+    email: "",
+    password: "",
+  });
   const [error, setError] = useState({
     email: false,
     password: false,
+    loginEmail: false,
+    loginPassword: false,
   });
   const navigate = useNavigate();
   const [loading, isLoading] = useState(true);
@@ -50,20 +56,20 @@ function Register({ setLoggedIn }) {
 
   const signUpBtn = async () => {
     try {
-      await createUserWithEmailAndPassword(auth, signUpEmail, signUpPassword);
+      await createUserWithEmailAndPassword(auth, signUp.email, signUp.password);
       localStorage.setItem("loggedIn", true);
       setLoggedIn(true);
       navigate("/blog");
     } catch (err) {
       console.log(err);
     }
-    if (signUpEmail.trim() === "" || !signUpEmail.includes("@")) {
+    if (signUp.email.trim() === "" || !signUp.email.includes("@")) {
       setError((prevError) => ({ ...prevError, email: true }));
     } else {
       setError((prevError) => ({ ...prevError, email: false }));
     }
-    
-    if (signUpPassword.trim() === "" || signUpPassword.length < 6) {
+
+    if (signUp.password.trim() === "" || signUp.password.length < 6) {
       setError((prevError) => ({ ...prevError, password: true }));
     } else {
       setError((prevError) => ({ ...prevError, password: false }));
@@ -72,12 +78,23 @@ function Register({ setLoggedIn }) {
 
   const loginBtn = async () => {
     try {
-      await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      await signInWithEmailAndPassword(auth, login.email, login.password);
       localStorage.setItem("loggedIn", true);
       setLoggedIn(true);
       navigate("/blog");
     } catch (err) {
       console.log(err);
+    }
+    if (login.email.trim() === "" || !login.email.includes("@")) {
+      setError((prevError) => ({ ...prevError, loginEmail: true }));
+    } else {
+      setError((prevError) => ({ ...prevError, loginEmail: false }));
+    }
+
+    if (login.password.trim() === "" || login.password.length < 6) {
+      setError((prevError) => ({ ...prevError, loginPassword: true }));
+    } else {
+      setError((prevError) => ({ ...prevError, loginPassword: false }));
     }
   };
 
@@ -101,7 +118,7 @@ function Register({ setLoggedIn }) {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
-            duration: 2,
+            duration: 1.2,
             delay: 0.2,
             ease: [0, 0.71, 0.2, 1.01],
           }}
@@ -138,18 +155,35 @@ function Register({ setLoggedIn }) {
                     <TextField
                       label="Email"
                       type="email"
-                      value={signUpEmail}
-                      onChange={(e) => setSignUpEmail(e.target.value)}
+                      value={signUp.email}
+                      onChange={(e) =>
+                        setSignUp({ ...signUp, email: e.target.value })
+                      }
                       error={error.email}
                       helperText={
-                        error.email ? "Enter a valid email address" : ""
+                        error.email ? (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{
+                              opacity: 1,
+                              y: 0,
+                              transition: { duration: 0.25 },
+                            }}
+                          >
+                            Enter a valid email address
+                          </motion.div>
+                        ) : (
+                          ""
+                        )
                       }
                     />
                     <TextField
                       label="Password"
                       type="password"
-                      value={signUpPassword}
-                      onChange={(e) => setSignUpPassword(e.target.value)}
+                      value={signUp.password}
+                      onChange={(e) =>
+                        setSignUp({ ...signUp, password: e.target.value })
+                      }
                       helperText={
                         error.password ? (
                           <motion.div
@@ -157,7 +191,7 @@ function Register({ setLoggedIn }) {
                             animate={{
                               opacity: 1,
                               y: 0,
-                              transition: { duration: 0.25 },
+                              transition: { duration: 0.22 },
                             }}
                           >
                             Enter a valid Password
@@ -217,14 +251,39 @@ function Register({ setLoggedIn }) {
                     <TextField
                       label="Email..."
                       type="email"
-                      value={loginEmail}
-                      onChange={(e) => setLoginEmail(e.target.value)}
+                      value={login.email}
+                      onChange={(e) =>
+                        setLogin({ ...login, email: e.target.value })
+                      }
+                      error={error.loginEmail}
+                      helperText={
+                        error.loginEmail ? "Enter a valid email address" : ""
+                      }
                     />
                     <TextField
                       label="Password..."
                       type="password"
-                      value={loginPassword}
-                      onChange={(e) => setLoginPassword(e.target.value)}
+                      value={login.password}
+                      onChange={(e) =>
+                        setLogin({ ...login, password: e.target.value })
+                      }
+                      helperText={
+                        error.loginPassword ? (
+                          <motion.div
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{
+                              opacity: 1,
+                              y: 0,
+                              transition: { duration: 0.22 },
+                            }}
+                          >
+                            Enter a valid Password
+                          </motion.div>
+                        ) : (
+                          "Password should be at least 6 characters"
+                        )
+                      }
+                      error={error.loginPassword}
                     />
                     <Button
                       onClick={loginBtn}

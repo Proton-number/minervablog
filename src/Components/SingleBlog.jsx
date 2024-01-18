@@ -6,6 +6,7 @@ import imageUrlBuilder from "@sanity/image-url";
 import BlockContent from "@sanity/block-content-to-react";
 import { bouncy } from "ldrs";
 import { motion } from "framer-motion";
+import Comments from "./Comments";
 
 const builder = imageUrlBuilder(sanityClient);
 function urlFor(source) {
@@ -163,6 +164,7 @@ function SingleBlog() {
         dataset="production"
         serializers={customSerializers}
       />
+      <Comments/>
     </Stack>
   );
 }
