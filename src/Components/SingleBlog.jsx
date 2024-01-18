@@ -13,7 +13,7 @@ function urlFor(source) {
   return builder.image(source);
 }
 
-function SingleBlog() {
+function SingleBlog({ loggedIn, setLoggedIn }) {
   const [singleBlog, setSingleBlog] = useState(null);
   bouncy.register();
 
@@ -164,7 +164,7 @@ function SingleBlog() {
         dataset="production"
         serializers={customSerializers}
       />
-      <Comments blogId={singleBlog._id}/>
+      <Comments blogId={singleBlog._id} />
     </Stack>
   );
 }
