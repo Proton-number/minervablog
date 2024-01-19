@@ -11,10 +11,11 @@ import {
 } from "@mui/material";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import React, { useState } from "react";
-import { auth } from "../Config/Firebase";
+import { auth, db } from "../Config/Firebase";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
 
 function Comments({ blogId }) {
   const [comments, setComments] = useLocalStorage(`${blogId}-comments`, "");
@@ -48,19 +49,36 @@ function Comments({ blogId }) {
       return `${seconds} ${seconds === 1 ? "second" : "seconds"} ago`;
     }
   };
+  const commentCollectionRef = collection(db, "comments");
 
-  const commentHandler = () => {
+  const commentHandler = async () => {
     const timestamp = new Date().toISOString();
+    //upadating locally
     setCommentValues([
       ...commentValues,
-      { comments, userPhoto, userName, timestamp },
+      { id: auth.currentUser.uid, comments, userPhoto, userName, timestamp },
     ]);
     setComments("");
+    //updating firestore
+    await addDoc(commentCollectionRef, {
+      comments,
+      commentValues,
+      user: { name: auth.currentUser.displayName, id: auth.currentUser.uid },
+      timestamp,
+    });
   };
-  const deleteHandler = (stableIndex) => {
-    setCommentValues(commentValues.filter((comment, i) => i !== stableIndex));
-    setAnchorEl1(null);
+  const deleteHandler = async (commentId) => {
+    try {
+      await deleteDoc(doc(commentCollectionRef, commentId));
+      // Remove the deleted comment from the local state
+      setCommentValues(
+        commentValues.filter((comment) => comment.id !== commentId)
+      );
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+    }
   };
+
   return (
     <Box>
       <Typography variant="h5">Comments</Typography>
@@ -77,6 +95,7 @@ function Comments({ blogId }) {
           <Stack spacing={4} direction="row" sx={{ alignItems: "center" }}>
             {userPhoto && (
               <Avatar
+                key={`avatar-${user.uid}`}
                 src={userPhoto}
                 alt="userPhoto"
                 sx={{
@@ -100,13 +119,13 @@ function Comments({ blogId }) {
             </Button>
           </Stack>
 
-          {commentValues.map((comment, index) => (
+          {commentValues.map((comment) => (
             <>
               <Stack
                 direction="row"
                 sx={{ alignItems: "center", marginTop: "34px" }}
                 spacing={28}
-                key={index}
+                key={comment.id}
               >
                 <Stack
                   direction="row"
@@ -157,7 +176,7 @@ function Comments({ blogId }) {
                     <Stack
                       direction="row"
                       spacing={0.5}
-                      onClick={() => deleteHandler(index)}
+                      onClick={() => deleteHandler(comment.id)}
                     >
                       <DeleteIcon />
                       <Typography>Delete </Typography>
