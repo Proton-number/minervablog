@@ -54,30 +54,43 @@ function Comments({ blogId }) {
   const commentHandler = async () => {
     const timestamp = new Date().toISOString();
     //upadating locally
-    setCommentValues([
-      ...commentValues,
-      { id: auth.currentUser.uid, comments, userPhoto, userName, timestamp },
-    ]);
-    setComments("");
     //updating firestore
-    await addDoc(commentCollectionRef, {
+    const commentDocRef = await addDoc(commentCollectionRef, {
       comments,
-      commentValues,
       user: { name: auth.currentUser.displayName, id: auth.currentUser.uid },
       timestamp,
     });
+
+    const newCommentId = commentDocRef.id;
+
+    setCommentValues([
+      ...commentValues,
+      { id: newCommentId, comments, userPhoto, userName, timestamp },
+    ]);
+    setComments("");
   };
+
   const deleteHandler = async (commentId) => {
     try {
-      await deleteDoc(doc(commentCollectionRef, commentId));
-      // Remove the deleted comment from the local state
-      setCommentValues(
-        commentValues.filter((comment) => comment.id !== commentId)
+      // Get a reference to the specific comment document to delete
+      const commentDocRef = doc(db, "comments", commentId);
+  
+      // Delete the comment from Firestore
+      await deleteDoc(commentDocRef);
+  
+      // Remove the comment from local state using the correct commentId
+      const updatedCommentValues = commentValues.filter(
+        (comment) => comment.id !== commentId
       );
+      setCommentValues(updatedCommentValues);
+  
+      console.log("Comment deleted successfully:", commentId);
     } catch (error) {
       console.error("Error deleting comment:", error);
+      // Handle errors gracefully, e.g., display a user-friendly message
     }
   };
+  
 
   return (
     <Box>
@@ -95,7 +108,6 @@ function Comments({ blogId }) {
           <Stack spacing={4} direction="row" sx={{ alignItems: "center" }}>
             {userPhoto && (
               <Avatar
-                key={`avatar-${user.uid}`}
                 src={userPhoto}
                 alt="userPhoto"
                 sx={{
@@ -119,13 +131,12 @@ function Comments({ blogId }) {
             </Button>
           </Stack>
 
-          {commentValues.map((comment) => (
-            <>
+          {commentValues.map((comment, index) => (
+            <React.Fragment key={index}>
               <Stack
                 direction="row"
                 sx={{ alignItems: "center", marginTop: "34px" }}
                 spacing={28}
-                key={comment.id}
               >
                 <Stack
                   direction="row"
@@ -176,7 +187,9 @@ function Comments({ blogId }) {
                     <Stack
                       direction="row"
                       spacing={0.5}
-                      onClick={() => deleteHandler(comment.id)}
+                      onClick={() => {
+                        deleteHandler(comment.id);
+                      }}
                     >
                       <DeleteIcon />
                       <Typography>Delete </Typography>
@@ -187,7 +200,7 @@ function Comments({ blogId }) {
               <Typography variant="h5" sx={{ marginLeft: "60px" }}>
                 {comment.comments}
               </Typography>
-            </>
+            </React.Fragment>
           ))}
         </Stack>
       </Paper>
