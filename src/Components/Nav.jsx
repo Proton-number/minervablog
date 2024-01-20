@@ -28,7 +28,6 @@ function Nav({ loggedIn, setLoggedIn }) {
   const logOut = async () => {
     try {
       await signOut(auth).then(() => {
-        localStorage.clear();
         setLoggedIn(false);
         navigate("/");
       });

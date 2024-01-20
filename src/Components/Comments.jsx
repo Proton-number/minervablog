@@ -7,23 +7,19 @@ import {
   Paper,
   Button,
   IconButton,
-  Popover,
 } from "@mui/material";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import React, { useState } from "react";
 import { auth, db } from "../Config/Firebase";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
 
 function Comments({ blogId }) {
-  const [comments, setComments] = useLocalStorage(`${blogId}-comments`, "");
+  const [comments, setComments] = useLocalStorage(`${blogId}-comments`, []);
   const [commentValues, setCommentValues] = useLocalStorage(
     `${blogId}-commentValues`,
     []
   );
-  const [anchorEl1, setAnchorEl1] = useState(null);
 
   const user = auth.currentUser;
   const [userPhoto, setUserPhoto] = useState(user?.photoURL ?? "");
@@ -68,29 +64,28 @@ function Comments({ blogId }) {
       { id: newCommentId, comments, userPhoto, userName, timestamp },
     ]);
     setComments("");
+    console.log(newCommentId);
   };
 
   const deleteHandler = async (commentId) => {
     try {
       // Get a reference to the specific comment document to delete
       const commentDocRef = doc(db, "comments", commentId);
-  
+
       // Delete the comment from Firestore
       await deleteDoc(commentDocRef);
-  
+
       // Remove the comment from local state using the correct commentId
       const updatedCommentValues = commentValues.filter(
         (comment) => comment.id !== commentId
       );
       setCommentValues(updatedCommentValues);
-  
+
       console.log("Comment deleted successfully:", commentId);
     } catch (error) {
       console.error("Error deleting comment:", error);
-      // Handle errors gracefully, e.g., display a user-friendly message
     }
   };
-  
 
   return (
     <Box>
@@ -126,17 +121,21 @@ function Comments({ blogId }) {
               rows={6}
               sx={{ width: { lg: "600px" } }}
             />
-            <Button variant="contained" onClick={commentHandler}>
-              click me
+            <Button
+              variant="contained"
+              onClick={commentHandler}
+              sx={{ textTransform: "none" }}
+            >
+              Comment
             </Button>
           </Stack>
 
-          {commentValues.map((comment, index) => (
-            <React.Fragment key={index}>
+          {commentValues.map((comment) => (
+            <React.Fragment key={comment.id}>
               <Stack
                 direction="row"
                 sx={{ alignItems: "center", marginTop: "34px" }}
-                spacing={28}
+                spacing={4}
               >
                 <Stack
                   direction="row"
@@ -159,45 +158,18 @@ function Comments({ blogId }) {
                     {timeAgo(comment.timestamp)}
                   </Typography>
                 </Stack>
-                <IconButton onClick={(e) => setAnchorEl1(e.currentTarget)}>
-                  <MoreVertIcon />
-                </IconButton>
-                <Popover
-                  anchorEl={anchorEl1}
-                  open={Boolean(anchorEl1)}
-                  onClose={() => setAnchorEl1(null)}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "left",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "left",
-                  }}
-                  elevation={1}
-                >
-                  <Stack
-                    spacing={1}
-                    sx={{ alignItems: "center", padding: "10px" }}
+                {comment.id !== auth.currentUser.uid && (
+                  <IconButton
+                    onClick={() => {
+                      console.log("Comment ID being passed:", comment.id);
+                      deleteHandler(comment.id);
+                    }}
                   >
-                    <Stack direction="row" spacing={1.8}>
-                      <EditIcon />
-                      <Typography>Edit </Typography>
-                    </Stack>
-                    <Stack
-                      direction="row"
-                      spacing={0.5}
-                      onClick={() => {
-                        deleteHandler(comment.id);
-                      }}
-                    >
-                      <DeleteIcon />
-                      <Typography>Delete </Typography>
-                    </Stack>
-                  </Stack>
-                </Popover>
+                    <DeleteIcon />
+                  </IconButton>
+                )}
               </Stack>
-              <Typography variant="h5" sx={{ marginLeft: "60px" }}>
+              <Typography variant="subtitle1" sx={{ marginLeft: "60px" }}>
                 {comment.comments}
               </Typography>
             </React.Fragment>
