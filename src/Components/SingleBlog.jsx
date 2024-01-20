@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, Avatar } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import sanityClient from "../client";
 import { Link, useParams } from "react-router-dom";
@@ -134,12 +134,10 @@ function SingleBlog({ loggedIn, setLoggedIn }) {
 
       <Stack spacing={4} direction="row" sx={{ alignItems: "center" }}>
         {singleBlog.authorImage && (
-          <Box
-            component="img"
+          <Avatar
             sx={{
-              width: { xs: "70px", sm: "120px" },
-              height: { xs: "70px", sm: "120px" },
-              borderRadius: "50%",
+              width: { xs: "70px", sm: "60px" },
+              height: { xs: "70px", sm: "60px" },
             }}
             src={urlFor(singleBlog.authorImage).url()}
             alt={singleBlog.name}
@@ -164,7 +162,7 @@ function SingleBlog({ loggedIn, setLoggedIn }) {
         dataset="production"
         serializers={customSerializers}
       />
-      <Comments blogId={singleBlog._id} />
+      <Comments blogId={slug} />
     </Stack>
   );
 }

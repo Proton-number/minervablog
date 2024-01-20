@@ -29,6 +29,7 @@ function Nav({ loggedIn, setLoggedIn }) {
     try {
       await signOut(auth).then(() => {
         setLoggedIn(false);
+        localStorage.clear();
         navigate("/");
       });
     } catch (err) {

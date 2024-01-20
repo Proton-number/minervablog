@@ -9,13 +9,21 @@ import {
   IconButton,
 } from "@mui/material";
 import { useLocalStorage } from "@uidotdev/usehooks";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth, db } from "../Config/Firebase";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
 
 function Comments({ blogId }) {
-  const [comments, setComments] = useLocalStorage(`${blogId}-comments`, []);
+  const [comments, setComments] = useLocalStorage(`${blogId}-comments`, "");
   const [commentValues, setCommentValues] = useLocalStorage(
     `${blogId}-commentValues`,
     []
@@ -49,42 +57,32 @@ function Comments({ blogId }) {
 
   const commentHandler = async () => {
     const timestamp = new Date().toISOString();
-    //upadating locally
-    //updating firestore
-    const commentDocRef = await addDoc(commentCollectionRef, {
+    await addDoc(commentCollectionRef, {
+      blogId,
       comments,
-      user: { name: auth.currentUser.displayName, id: auth.currentUser.uid },
+      user: {
+        name: auth.currentUser.displayName,
+        id: auth.currentUser.uid,
+        photo: auth.currentUser.photoURL,
+      },
       timestamp,
     });
-
-    const newCommentId = commentDocRef.id;
-
-    setCommentValues([
-      ...commentValues,
-      { id: newCommentId, comments, userPhoto, userName, timestamp },
-    ]);
     setComments("");
-    console.log(newCommentId);
   };
 
-  const deleteHandler = async (commentId) => {
-    try {
-      // Get a reference to the specific comment document to delete
-      const commentDocRef = doc(db, "comments", commentId);
-
-      // Delete the comment from Firestore
-      await deleteDoc(commentDocRef);
-
-      // Remove the comment from local state using the correct commentId
-      const updatedCommentValues = commentValues.filter(
-        (comment) => comment.id !== commentId
+  useEffect(() => {
+    const getComments = async () => {
+      const data = await getDocs(
+        query(commentCollectionRef, where("blogId", "==", blogId))
       );
-      setCommentValues(updatedCommentValues);
+      setCommentValues(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    };
+    getComments();
+  }, [blogId, commentValues]);
 
-      console.log("Comment deleted successfully:", commentId);
-    } catch (error) {
-      console.error("Error deleting comment:", error);
-    }
+  const deleteHandler = async (id) => {
+    const commentDocRef = doc(db, "comments", id);
+    await deleteDoc(commentDocRef);
   };
 
   return (
@@ -100,7 +98,11 @@ function Comments({ blogId }) {
         elevation={3}
       >
         <Stack>
-          <Stack spacing={4} direction="row" sx={{ alignItems: "center" }}>
+          <Stack
+            spacing={{ xs: 4, sm: 4 }}
+            direction={{ sm: "row" }}
+            sx={{ alignItems: "center" }}
+          >
             {userPhoto && (
               <Avatar
                 src={userPhoto}
@@ -119,61 +121,63 @@ function Comments({ blogId }) {
               type="text"
               multiline
               rows={6}
-              sx={{ width: { lg: "600px" } }}
+              sx={{ width: { xs: "340px", lg: "600px" } }}
             />
             <Button
               variant="contained"
               onClick={commentHandler}
-              sx={{ textTransform: "none" }}
+              sx={{ textTransform: "none", backgroundColor: "black" }}
             >
               Comment
             </Button>
           </Stack>
 
-          {commentValues.map((comment) => (
-            <React.Fragment key={comment.id}>
-              <Stack
-                direction="row"
-                sx={{ alignItems: "center", marginTop: "34px" }}
-                spacing={4}
-              >
+          {commentValues.map((comment, index) => {
+            return (
+              <React.Fragment key={index}>
                 <Stack
                   direction="row"
-                  spacing={3}
-                  sx={{ alignItems: "center" }}
+                  sx={{ alignItems: "center", marginTop: "34px" }}
+                  spacing={4}
                 >
-                  <Avatar
-                    src={comment.userPhoto}
-                    alt="userPhoto"
-                    sx={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                    }}
-                  />
-                  <Typography variant="body1">
-                    <b>{comment.userName}</b>
-                  </Typography>
-                  <Typography sx={{ opacity: "60%" }}>
-                    {timeAgo(comment.timestamp)}
-                  </Typography>
-                </Stack>
-                {comment.id !== auth.currentUser.uid && (
-                  <IconButton
-                    onClick={() => {
-                      console.log("Comment ID being passed:", comment.id);
-                      deleteHandler(comment.id);
-                    }}
+                  <Stack
+                    direction="row"
+                    spacing={3}
+                    sx={{ alignItems: "center" }}
                   >
-                    <DeleteIcon />
-                  </IconButton>
-                )}
-              </Stack>
-              <Typography variant="subtitle1" sx={{ marginLeft: "60px" }}>
-                {comment.comments}
-              </Typography>
-            </React.Fragment>
-          ))}
+                    <Avatar
+                      src={comment.user.photo}
+                      alt="userPhoto"
+                      sx={{
+                        width: "40px",
+                        height: "40px",
+                        borderRadius: "50%",
+                      }}
+                    />
+                    <Typography variant="body1">
+                      <b>{comment.user.name}</b>
+                    </Typography>
+                    <Typography sx={{ opacity: "60%" }}>
+                      {timeAgo(comment.timestamp)}
+                    </Typography>
+                  </Stack>
+                  {comment.user.id === auth.currentUser.uid && (
+                    <IconButton
+                      onClick={() => {
+                        console.log("Comment ID being passed:", comment.id);
+                        deleteHandler(comment.id);
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  )}
+                </Stack>
+                <Typography variant="subtitle1" sx={{ marginLeft: "60px" }}>
+                  {comment.comments}
+                </Typography>
+              </React.Fragment>
+            );
+          })}
         </Stack>
       </Paper>
     </Box>
