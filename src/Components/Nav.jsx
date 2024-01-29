@@ -6,10 +6,9 @@ import {
   createTheme,
   ThemeProvider,
   IconButton,
-  Box,
 } from "@mui/material";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../Config/Firebase";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +17,7 @@ import { motion } from "framer-motion";
 
 function Nav({ loggedIn, setLoggedIn }) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const font = createTheme({
     typography: {
@@ -45,7 +45,12 @@ function Nav({ loggedIn, setLoggedIn }) {
         animate={{ opacity: 1 }}
         transition={{ delay: 3.1, duration: 0.5 }}
         id="desktopNav"
-        sx={{ padding: 1.2, backgroundColor: "white", color: "black" }}
+        sx={{
+          padding: 1.2,
+          backgroundColor: location.pathname === "/" ? "transparent" : "white",
+          color: location.pathname === "/" ? "white" : "black",
+          position: location.pathname === "/" ? "absolute" : "fixed" ,
+        }}
         elevation={0}
       >
         <Toolbar>
@@ -56,7 +61,13 @@ function Nav({ loggedIn, setLoggedIn }) {
           </ThemeProvider>
 
           <Stack spacing={2} direction="row" sx={{ alignItems: "center" }}>
-            <Link to="/" style={{ textDecoration: "none", color: "black" }}>
+            <Link
+              to="/"
+              style={{
+                textDecoration: "none",
+                color: location.pathname === "/" ? "white" : "black",
+              }}
+            >
               <Typography variant="h6" sx={{ cursor: "pointer" }}>
                 Home
               </Typography>
@@ -65,7 +76,10 @@ function Nav({ loggedIn, setLoggedIn }) {
             {!loggedIn ? (
               <Link
                 to="/signUp"
-                style={{ textDecoration: "none", color: "black" }}
+                style={{
+                  textDecoration: "none",
+                  color: location.pathname === "/" ? "white" : "black",
+                }}
               >
                 <Typography variant="h6" sx={{ cursor: "pointer" }}>
                   Sign Up
@@ -75,7 +89,10 @@ function Nav({ loggedIn, setLoggedIn }) {
               <>
                 <Link
                   to="/blog"
-                  style={{ textDecoration: "none", color: "black" }}
+                  style={{
+                    textDecoration: "none",
+                    color: location.pathname === "/" ? "white" : "black",
+                  }}
                 >
                   <Typography variant="h6" sx={{ cursor: "pointer" }}>
                     Blogs
@@ -83,7 +100,11 @@ function Nav({ loggedIn, setLoggedIn }) {
                 </Link>
 
                 <IconButton onClick={logOut}>
-                  <LogoutIcon sx={{ color: "black" }} />
+                  <LogoutIcon
+                    sx={{
+                      color: location.pathname === "/" ? "white" : "black",
+                    }}
+                  />
                 </IconButton>
               </>
             )}

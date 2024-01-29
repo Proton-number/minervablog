@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { signOut } from "firebase/auth";
 import { auth } from "../Config/Firebase";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +23,7 @@ function NavMobile({ loggedIn, setLoggedIn }) {
   const [isDrawerOpen, setisDrawerOpen] = useState(false);
 
   let navigate = useNavigate();
+  const location = useLocation();
 
   const logOut = async () => {
     try {
@@ -50,7 +51,12 @@ function NavMobile({ loggedIn, setLoggedIn }) {
         animate={{ opacity: 1 }}
         transition={{ delay: 3.1, duration: 0.5 }}
         id="mobileNav"
-        sx={{ padding: 1.2, backgroundColor: "white", color: "black" }}
+        sx={{
+          padding: 1.2,
+          backgroundColor: location.pathname === "/" ? "transparent" : "white",
+          color: location.pathname === "/" ? "white" : "black",
+          position: location.pathname === "/" ? "absolute" : "fixed",
+        }}
         elevation={0}
       >
         <Toolbar>
@@ -65,7 +71,10 @@ function NavMobile({ loggedIn, setLoggedIn }) {
             aria-label="menu"
             onClick={() => setisDrawerOpen(true)}
           >
-            <MenuIcon fontSize="large" />
+            <MenuIcon
+              fontSize="large"
+              sx={{ color: location.pathname === "/" ? "white" : "black" }}
+            />
           </IconButton>
         </Toolbar>
       </AppBar>

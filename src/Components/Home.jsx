@@ -6,9 +6,11 @@ import {
   createTheme,
   ThemeProvider,
 } from "@mui/material";
+import { Card, CardCover, CardContent } from "@mui/joy";
 import img1 from "/src/images/Create-rafiki.png";
 import { motion } from "framer-motion";
 import { bouncy } from "ldrs";
+import viddy from "../Components/Videos/pexels-c-technical-6334253 (1080p).mp4";
 
 function Home() {
   const [loading, isLoading] = useState(true);
@@ -27,6 +29,32 @@ function Home() {
 
   return (
     <>
+      <Box className="hero">
+        <Box className="overlay" sx={{ height: { lg: "103%" } }} />
+        <video autoPlay loop muted src={viddy} className="video-bg" />
+        <Box
+          sx={{
+            position: "absolute",
+            top: 320,
+            left: 0,
+            right: 0,
+            bottom:0,
+            color: "white",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Typography variant="h1">Hey There!</Typography>
+        </Box>
+      </Box>
+    </>
+  );
+}
+
+export default Home;
+
+{
+  /* <>
       {loading ? (
         <l-bouncy size="45" speed="1.75" color="hsl(229, 100%, 23%)"></l-bouncy>
       ) : (
@@ -91,8 +119,5 @@ function Home() {
           </Stack>
         </Stack>
       )}
-    </>
-  );
+    </> */
 }
-
-export default Home;

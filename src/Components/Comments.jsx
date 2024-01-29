@@ -75,7 +75,10 @@ function Comments({ blogId }) {
       const data = await getDocs(
         query(commentCollectionRef, where("blogId", "==", blogId))
       );
-      setCommentValues(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      const sortedComments = data.docs
+        .map((doc) => ({ ...doc.data(), id: doc.id }))
+        .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      setCommentValues(sortedComments);
     };
     getComments();
   }, [blogId, commentValues]);
@@ -101,7 +104,7 @@ function Comments({ blogId }) {
           <Stack
             spacing={{ xs: 4, sm: 4 }}
             direction={{ sm: "row" }}
-            sx={{ alignItems: "center" }}
+            sx={{ alignItems: "center", justifyContent: "center" }}
           >
             {userPhoto && (
               <Avatar
@@ -121,12 +124,20 @@ function Comments({ blogId }) {
               type="text"
               multiline
               rows={6}
-              sx={{ width: { xs: "340px", lg: "600px" } }}
+              sx={{
+                width: { xs: "340px", lg: "600px" },
+              }}
             />
             <Button
               variant="contained"
               onClick={commentHandler}
-              sx={{ textTransform: "none", backgroundColor: "black" }}
+              sx={{
+                textTransform: "none",
+                backgroundColor: "black",
+                "&:hover": {
+                  backgroundColor: "hsl(0, 0%, 13%)",
+                },
+              }}
             >
               Comment
             </Button>
@@ -137,8 +148,11 @@ function Comments({ blogId }) {
               <React.Fragment key={index}>
                 <Stack
                   direction="row"
-                  sx={{ alignItems: "center", marginTop: "34px" }}
-                  spacing={4}
+                  sx={{
+                    marginTop: "34px",
+                    marginLeft: "20%",
+                  }}
+                  spacing={{ lg: 20 }}
                 >
                   <Stack
                     direction="row"
@@ -172,7 +186,15 @@ function Comments({ blogId }) {
                     </IconButton>
                   )}
                 </Stack>
-                <Typography variant="subtitle1" sx={{ marginLeft: "60px" }}>
+
+                <Typography
+                  variant="subtitle1"
+                  sx={{
+                    textAlign: "justify",
+                    width: { lg: "50%" },
+                    margin: "auto",
+                  }}
+                >
                   {comment.comments}
                 </Typography>
               </React.Fragment>
