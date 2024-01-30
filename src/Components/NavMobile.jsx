@@ -61,7 +61,7 @@ function NavMobile({ loggedIn, setLoggedIn }) {
       >
         <Toolbar>
           <ThemeProvider theme={font}>
-            <Typography variant="h3" sx={{ flexGrow: 1 }}>
+            <Typography variant="h4" sx={{ flexGrow: 1 }}>
               menervaBlog
             </Typography>
           </ThemeProvider>
@@ -73,7 +73,10 @@ function NavMobile({ loggedIn, setLoggedIn }) {
           >
             <MenuIcon
               fontSize="large"
-              sx={{ color: location.pathname === "/" ? "white" : "black" }}
+              sx={{
+                color: location.pathname === "/" ? "white" : "black",
+                marginLeft: "28px",
+              }}
             />
           </IconButton>
         </Toolbar>

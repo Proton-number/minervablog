@@ -35,7 +35,7 @@ function Home() {
         <Box className="overlay" sx={{ height: "100vh", zIndex: 1 }} />
         <video autoPlay loop muted src={viddy} className="video-bg" />
         <Stack
-          spacing={2}
+          spacing={0.2}
           sx={{
             zIndex: 1,
             position: "absolute",
@@ -70,12 +70,13 @@ function Home() {
                 backgroundColor: "white",
                 color: "black",
                 textTransform: "none",
-                padding: { sm: "0.5rem 1rem 0.5rem 1rem" },
-                fontSize: { sm: "1.25rem" },
+                padding: { xs: "1.2rem", sm: "0.5rem 1rem 0.5rem 1rem" },
+                fontSize: { xs: "1.2rem", sm: "1.25rem" },
                 "&:hover": {
                   backgroundColor: "hsl(225, 5%, 17%)",
                   color: "white",
                 },
+                borderRadius: "28px",
               }}
               disableElevation
             >
@@ -88,9 +89,9 @@ function Home() {
                 borderColor: "white",
                 color: "black",
                 textTransform: "none",
-                padding: { sm: "0.5rem 1rem 0.5rem 1rem" },
+                padding: { xs: "1.2rem", sm: "0.5rem 1rem 0.5rem 1rem" },
                 color: "white",
-                fontSize: { sm: "1.25rem" },
+                fontSize: { xs: "1.2rem", sm: "1.25rem" },
                 "&:hover": {
                   borderColor: "pink",
                 },
@@ -108,11 +109,11 @@ function Home() {
         spacing={{ xs: 4, sm: 8, lg: 0 }}
         direction={{ sm: "row" }}
         sx={{
-          padding: "100px",
+          padding: { xs: "20px", lg: "100px" },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100vh",
+          height: "100dvh",
           backgroundColor: "hsl(191, 67%, 5%)",
         }}
       >
@@ -126,11 +127,11 @@ function Home() {
         >
           <Typography
             variant="h1"
-            sx={{ fontSize: { xs: "80px", lg: "110px" } }}
+            sx={{ fontSize: { xs: "66px", lg: "110px" } }}
           >
             Inspiring Blogs
           </Typography>
-          <Typography variant="h6" sx={{ width: { lg: "70%" } }}>
+          <Typography variant="body1" sx={{ width: { lg: "70%" } }}>
             Be a source of inspiration for other engineering students by sharing
             your journey and experiences. Our platform allows you to inspire and
             motivate others in the community.
@@ -139,7 +140,7 @@ function Home() {
         <Box
           component="img"
           src={img1}
-          sx={{ width: { xs: "300px", lg: "500px" }, height: "auto" }}
+          sx={{ width: { xs: "220px", lg: "500px" }, height: "auto" }}
         />
       </Stack>
 
@@ -147,7 +148,7 @@ function Home() {
         spacing={{ xs: 4, sm: 8, lg: 17 }}
         direction={{ sm: "row" }}
         sx={{
-          padding: "100px",
+          padding: { xs: "20px", lg: "100px" },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -158,7 +159,7 @@ function Home() {
         <Box
           component="img"
           src={img2}
-          sx={{ width: { xs: "300px", lg: "500px" }, height: "auto" }}
+          sx={{ width: { xs: "220px", lg: "500px" }, height: "auto" }}
         />
         <Stack
           spacing={2}
@@ -170,11 +171,11 @@ function Home() {
         >
           <Typography
             variant="h1"
-            sx={{ fontSize: { xs: "80px", lg: "110px" } }}
+            sx={{ fontSize: { xs: "66px", lg: "110px" } }}
           >
             Exclusive Resources
           </Typography>
-          <Typography variant="h6" >
+          <Typography variant="body1">
             Gain access to exclusive resources, tips, and tricks for excelling
             in your engineering studies. Our platform provides valuable
             resources and information to help you succeed.
