@@ -53,7 +53,7 @@ function Home() {
         >
           <Typography
             variant="h1"
-            sx={{ fontSize: { xs: "50px", sm: "80px", lg: "100px" } }}
+            sx={{ fontSize: { xs: "60px", sm: "80px", lg: "100px" } }}
           >
             {" "}
             Connect with Mechanical Engineering Students
@@ -63,44 +63,6 @@ function Home() {
             Join our community and share your experiences as an engineering
             student
           </Typography>
-          <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "white",
-                color: "black",
-                textTransform: "none",
-                padding: { xs: "1.2rem", sm: "0.5rem 1rem 0.5rem 1rem" },
-                fontSize: { xs: "1.2rem", sm: "1.25rem" },
-                "&:hover": {
-                  backgroundColor: "hsl(225, 5%, 17%)",
-                  color: "white",
-                },
-                borderRadius: "28px",
-              }}
-              disableElevation
-            >
-              Contact us
-            </Button>
-            <Button
-              onClick={() => alert("yoo")}
-              variant="outlined"
-              sx={{
-                borderColor: "white",
-                color: "black",
-                textTransform: "none",
-                padding: { xs: "1.2rem", sm: "0.5rem 1rem 0.5rem 1rem" },
-                color: "white",
-                fontSize: { xs: "1.2rem", sm: "1.25rem" },
-                "&:hover": {
-                  borderColor: "pink",
-                },
-              }}
-              disableElevation
-            >
-              Services we offer
-            </Button>
-          </Stack>
         </Stack>
       </Box>
 
@@ -113,7 +75,7 @@ function Home() {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100dvh",
+          height: "100vh",
           backgroundColor: "hsl(191, 67%, 5%)",
         }}
       >
