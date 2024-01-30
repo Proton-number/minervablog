@@ -5,9 +5,11 @@ import {
   Box,
   createTheme,
   ThemeProvider,
+  Button,
 } from "@mui/material";
 import { Card, CardCover, CardContent } from "@mui/joy";
-import img1 from "/src/images/Create-rafiki.png";
+import img1 from "/src/images/pexels-ksenia-chernaya-5716296.jpg";
+import img2 from "/src/images/pexels-cottonbro-studio-4778407.jpg";
 import { motion } from "framer-motion";
 import { bouncy } from "ldrs";
 import viddy from "../Components/Videos/pexels-c-technical-6334253 (1080p).mp4";
@@ -30,31 +32,162 @@ function Home() {
   return (
     <>
       <Box className="hero">
-        <Box className="overlay" sx={{ height: { lg: "103%" } }} />
+        <Box className="overlay" sx={{ height: "100vh", zIndex: 1 }} />
         <video autoPlay loop muted src={viddy} className="video-bg" />
-        <Box
+        <Stack
+          spacing={2}
           sx={{
+            zIndex: 1,
             position: "absolute",
-            top: 320,
-            left: 0,
-            right: 0,
-            bottom:0,
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)",
             color: "white",
             display: "flex",
             justifyContent: "center",
+            alignItems: "center",
+            margin: "auto",
+            width: { sm: "60%", lg: "80%" },
+            textAlign: "center",
           }}
         >
-          <Typography variant="h1">Hey There!</Typography>
-        </Box>
+          <Typography
+            variant="h1"
+            sx={{ fontSize: { xs: "50px", sm: "80px", lg: "100px" } }}
+          >
+            {" "}
+            Connect with Mechanical Engineering Students
+          </Typography>
+
+          <Typography variant="h6">
+            Join our community and share your experiences as an engineering
+            student
+          </Typography>
+          <Stack direction={{ xs: "column", sm: "row" }} spacing={2}>
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: "white",
+                color: "black",
+                textTransform: "none",
+                padding: { sm: "0.5rem 1rem 0.5rem 1rem" },
+                fontSize: { sm: "1.25rem" },
+                "&:hover": {
+                  backgroundColor: "hsl(225, 5%, 17%)",
+                  color: "white",
+                },
+              }}
+              disableElevation
+            >
+              Contact us
+            </Button>
+            <Button
+              onClick={() => alert("yoo")}
+              variant="outlined"
+              sx={{
+                borderColor: "white",
+                color: "black",
+                textTransform: "none",
+                padding: { sm: "0.5rem 1rem 0.5rem 1rem" },
+                color: "white",
+                fontSize: { sm: "1.25rem" },
+                "&:hover": {
+                  borderColor: "pink",
+                },
+              }}
+              disableElevation
+            >
+              Services we offer
+            </Button>
+          </Stack>
+        </Stack>
       </Box>
+
+      {/* INSPIRING BLOG STACK */}
+      <Stack
+        spacing={{ xs: 4, sm: 8, lg: 0 }}
+        direction={{ sm: "row" }}
+        sx={{
+          padding: "100px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          backgroundColor: "hsl(191, 67%, 5%)",
+        }}
+      >
+        <Stack
+          spacing={2}
+          sx={{
+            width: { lg: "60%" },
+            color: "hsl(27, 100%, 77%)",
+            textAlign: { xs: "center", sm: "left" },
+          }}
+        >
+          <Typography
+            variant="h1"
+            sx={{ fontSize: { xs: "80px", lg: "110px" } }}
+          >
+            Inspiring Blogs
+          </Typography>
+          <Typography variant="h6" sx={{ width: { lg: "70%" } }}>
+            Be a source of inspiration for other engineering students by sharing
+            your journey and experiences. Our platform allows you to inspire and
+            motivate others in the community.
+          </Typography>
+        </Stack>
+        <Box
+          component="img"
+          src={img1}
+          sx={{ width: { xs: "300px", lg: "500px" }, height: "auto" }}
+        />
+      </Stack>
+
+      <Stack
+        spacing={{ xs: 4, sm: 8, lg: 17 }}
+        direction={{ sm: "row" }}
+        sx={{
+          padding: "100px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          backgroundColor: "hsl(7, 69%, 97%)",
+        }}
+      >
+        <Box
+          component="img"
+          src={img2}
+          sx={{ width: { xs: "300px", lg: "500px" }, height: "auto" }}
+        />
+        <Stack
+          spacing={2}
+          sx={{
+            width: { lg: "60%" },
+            color: "hsl(20, 100%, 50%)",
+            textAlign: { xs: "center", sm: "right" },
+          }}
+        >
+          <Typography
+            variant="h1"
+            sx={{ fontSize: { xs: "80px", lg: "110px" } }}
+          >
+            Exclusive Resources
+          </Typography>
+          <Typography variant="h6" >
+            Gain access to exclusive resources, tips, and tricks for excelling
+            in your engineering studies. Our platform provides valuable
+            resources and information to help you succeed.
+          </Typography>
+        </Stack>
+      </Stack>
     </>
   );
 }
 
 export default Home;
 
-{
-  /* <>
+/* <>
       {loading ? (
         <l-bouncy size="45" speed="1.75" color="hsl(229, 100%, 23%)"></l-bouncy>
       ) : (
@@ -120,4 +253,3 @@ export default Home;
         </Stack>
       )}
     </> */
-}
