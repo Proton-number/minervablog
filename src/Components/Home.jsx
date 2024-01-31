@@ -35,7 +35,7 @@ function Home() {
         <Box className="overlay" sx={{ height: "100vh", zIndex: 1 }} />
         <video autoPlay loop muted src={viddy} className="video-bg" />
         <Stack
-          spacing={0.2}
+          spacing={{ sm: 4 }}
           sx={{
             zIndex: 1,
             position: "absolute",
@@ -44,22 +44,25 @@ function Home() {
             transform: "translate(-50%, -50%)",
             color: "white",
             display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            margin: "auto",
-            width: { sm: "60%", lg: "80%" },
+            // justifyContent: "center",
+            // alignItems: "center",
+            width: { xs: "90%", sm: "80%", lg: "70%" },
             textAlign: "center",
           }}
         >
           <Typography
-            variant="h1"
-            sx={{ fontSize: { xs: "60px", sm: "80px", lg: "100px" } }}
+            variant="h6"
+            sx={{
+              fontSize: { xs: "60px", sm: "50px", lg: "100px" },
+              fontWeight: { sm: 700 },
+              lineHeight: 1,
+            }}
           >
             {" "}
             Connect with Mechanical Engineering Students
           </Typography>
 
-          <Typography variant="h6">
+          <Typography variant="body1">
             Join our community and share your experiences as an engineering
             student
           </Typography>
@@ -71,7 +74,7 @@ function Home() {
         spacing={{ xs: 4, sm: 8, lg: 0 }}
         direction={{ sm: "row" }}
         sx={{
-          padding: { xs: "20px", lg: "100px" },
+          padding: { xs: "20px", sm: "", lg: "100px" },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -89,11 +92,11 @@ function Home() {
         >
           <Typography
             variant="h1"
-            sx={{ fontSize: { xs: "66px", lg: "110px" } }}
+            sx={{ fontSize: { xs: "66px", sm: "78px", lg: "110px" } }}
           >
             Inspiring Blogs
           </Typography>
-          <Typography variant="body1" sx={{ width: { lg: "70%" } }}>
+          <Typography variant="body1" sx={{ width: { sm: "80%", lg: "70%" } }}>
             Be a source of inspiration for other engineering students by sharing
             your journey and experiences. Our platform allows you to inspire and
             motivate others in the community.
@@ -102,7 +105,10 @@ function Home() {
         <Box
           component="img"
           src={img1}
-          sx={{ width: { xs: "220px", lg: "500px" }, height: "auto" }}
+          sx={{
+            width: { xs: "220px", sm: "400px", lg: "500px" },
+            height: { sm: "380px", lg: "auto" },
+          }}
         />
       </Stack>
 
@@ -121,7 +127,10 @@ function Home() {
         <Box
           component="img"
           src={img2}
-          sx={{ width: { xs: "220px", lg: "500px" }, height: "auto" }}
+          sx={{
+            width: { xs: "220px", sm: "400px", lg: "500px" },
+            height: { sm: "380px", lg: "auto" },
+          }}
         />
         <Stack
           spacing={2}
@@ -133,7 +142,7 @@ function Home() {
         >
           <Typography
             variant="h1"
-            sx={{ fontSize: { xs: "66px", lg: "110px" } }}
+            sx={{ fontSize: { xs: "66px", sm: "78px", lg: "110px" } }}
           >
             Exclusive Resources
           </Typography>

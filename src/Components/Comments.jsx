@@ -48,7 +48,7 @@ function Comments({ blogId }) {
     } else if (hours > 0) {
       return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
     } else if (minutes > 0) {
-      return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
+      return `${minutes} ${minutes === 1 ? "min" : "mins"} ago`;
     } else {
       return `${seconds} ${seconds === 1 ? "second" : "seconds"} ago`;
     }
@@ -90,13 +90,17 @@ function Comments({ blogId }) {
 
   return (
     <Box>
-      <Typography variant="h5">Comments</Typography>
+      <Typography variant="h5">
+        <b>Comments</b>
+      </Typography>
       <Paper
         sx={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "30px",
+          padding: "5px",
+          width: "90%",
+          margin:"auto"
         }}
         elevation={3}
       >
@@ -125,7 +129,7 @@ function Comments({ blogId }) {
               multiline
               rows={6}
               sx={{
-                width: { xs: "340px", lg: "600px" },
+                width: { xs: "240px", sm: "300px", lg: "600px" },
               }}
             />
             <Button
@@ -150,14 +154,15 @@ function Comments({ blogId }) {
                   direction="row"
                   sx={{
                     marginTop: "34px",
-                    marginLeft: "20%",
+                    marginLeft: { sm: "20%" },
+                    justifyContent:"center"
                   }}
-                  spacing={{ lg: 20 }}
+                  spacing={{xs:3, lg: 20 }}
                 >
                   <Stack
-                    direction="row"
+                    direction={{sm:"row"}}
                     spacing={3}
-                    sx={{ alignItems: "center" }}
+                    sx={{ alignItems: "center",  }}
                   >
                     <Avatar
                       src={comment.user.photo}

@@ -75,7 +75,6 @@ function NavMobile({ loggedIn, setLoggedIn }) {
               fontSize="large"
               sx={{
                 color: location.pathname === "/" ? "white" : "black",
-                marginLeft: "28px",
               }}
             />
           </IconButton>

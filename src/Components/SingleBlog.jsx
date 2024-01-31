@@ -92,78 +92,84 @@ function SingleBlog({ loggedIn, setLoggedIn }) {
 
   // MAIN CONTENT
   return (
-    <Stack
-      component={motion.div}
-      initial={{ opacity: 0, scale: 0.5 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{
-        duration: 1,
-        delay: 0.2,
-        ease: [0, 0.71, 0.2, 1.01],
-      }}
-      spacing={3}
-      sx={{
-        padding: {
-          xs: "50px",
-          sm: "60px",
-          lg: "100px",
-        },
-        marginTop: {
-          xs: "40px",
-          lg: 0,
-        },
-      }}
-    >
-      <Typography variant="h3" sx={{ textAlign: "center" }}>
-        {singleBlog.title}
-      </Typography>
-
-      <Box
-        sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
+    <>
+      <Stack
+        component={motion.div}
+        initial={{ opacity: 0, scale: 0.5 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{
+          duration: 1,
+          delay: 0.2,
+          ease: [0, 0.71, 0.2, 1.01],
+        }}
+        spacing={3}
+        sx={{
+          padding: {
+            xs: "50px",
+            sm: "60px",
+            lg: "100px",
+          },
+          marginTop: {
+            xs: "40px",
+            lg: 0,
+          },
+        }}
       >
+        <Typography variant="h3" sx={{ textAlign: "center" }}>
+          {singleBlog.title}
+        </Typography>
+
         <Box
-          component="img"
           sx={{
-            width: "100%",
-            height: "auto",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
-          src={singleBlog.mainImage.asset.url}
-          alt={singleBlog.mainImage.alt}
-        />
-      </Box>
-
-      <Stack spacing={4} direction="row" sx={{ alignItems: "center" }}>
-        {singleBlog.authorImage && (
-          <Avatar
-            sx={{
-              width: { xs: "70px", sm: "60px" },
-              height: { xs: "70px", sm: "60px" },
-            }}
-            src={urlFor(singleBlog.authorImage).url()}
-            alt={singleBlog.name}
-          />
-        )}
-
-        <Link
-          to={"/about/" + singleBlog.author._id}
-          style={{ textDecoration: "none", color: "inherit" }}
         >
-          <Typography variant="p">
-            <b>{singleBlog.name}</b>
-          </Typography>
-        </Link>
+          <Box
+            component="img"
+            sx={{
+              width: "100%",
+              height: "auto",
+            }}
+            src={singleBlog.mainImage.asset.url}
+            alt={singleBlog.mainImage.alt}
+          />
+        </Box>
+
+        <Stack spacing={4} direction="row" sx={{ alignItems: "center" }}>
+          {singleBlog.authorImage && (
+            <Avatar
+              sx={{
+                width: { xs: "70px", sm: "60px" },
+                height: { xs: "70px", sm: "60px" },
+              }}
+              src={urlFor(singleBlog.authorImage).url()}
+              alt={singleBlog.name}
+            />
+          )}
+
+          <Link
+            to={"/about/" + singleBlog.author._id}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Typography variant="p">
+              <b>{singleBlog.name}</b>
+            </Typography>
+          </Link>
+        </Stack>
+
+        {/* BlockContent */}
+
+        <BlockContent
+          blocks={singleBlog.body}
+          projectId="0kqagvby"
+          dataset="production"
+          serializers={customSerializers}
+        />
       </Stack>
-
-      {/* BlockContent */}
-
-      <BlockContent
-        blocks={singleBlog.body}
-        projectId="0kqagvby"
-        dataset="production"
-        serializers={customSerializers}
-      />
       <Comments blogId={slug} />
-    </Stack>
+    </>
   );
 }
 

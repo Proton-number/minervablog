@@ -49,13 +49,16 @@ function Nav({ loggedIn, setLoggedIn }) {
           padding: 1.2,
           backgroundColor: location.pathname === "/" ? "transparent" : "white",
           color: location.pathname === "/" ? "white" : "black",
-          position: location.pathname === "/" ? "absolute" : "fixed" ,
+          position: location.pathname === "/" ? "absolute" : "fixed",
         }}
         elevation={0}
       >
         <Toolbar>
           <ThemeProvider theme={font}>
-            <Typography variant="h3" sx={{ flexGrow: 1 }}>
+            <Typography
+              variant="h3"
+              sx={{ flexGrow: 1, fontSize: { sm: "30px", lg: "40px" } }}
+            >
               menervaBlog
             </Typography>
           </ThemeProvider>

@@ -53,7 +53,7 @@ function Blogs() {
     >
      
       <Grid
-        columns={{ lg: 10 }}
+        columns={{sm:7, lg: 10 }}
         container
         spacing={4}
         sx={{
@@ -65,7 +65,7 @@ function Blogs() {
       >
         {blogs &&
           blogs.map((blog, index) => (
-            <Grid item key={index} lg={5}>
+            <Grid item key={index} sm={3} lg={5}>
               <Link
                 to={"/singleBlog/" + blog.slug.current}
                 style={{ color: "inherit", textDecoration: "none" }}
