@@ -44,13 +44,13 @@ function Comments({ blogId }) {
     const days = Math.floor(hours / 24);
 
     if (days > 0) {
-      return `${days} ${days === 1 ? "day" : "days"} ago`;
+      return `${days} ${days === 1 ? "day" : "days"} `;
     } else if (hours > 0) {
-      return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+      return `${hours} ${hours === 1 ? "hour" : "hours"} `;
     } else if (minutes > 0) {
-      return `${minutes} ${minutes === 1 ? "min" : "mins"} ago`;
+      return `${minutes} ${minutes === 1 ? "min" : "mins"} `;
     } else {
-      return `${seconds} ${seconds === 1 ? "second" : "seconds"} ago`;
+      return `${seconds} ${seconds === 1 ? "second" : "seconds"} `;
     }
   };
   const commentCollectionRef = collection(db, "comments");
@@ -90,7 +90,10 @@ function Comments({ blogId }) {
 
   return (
     <Box>
-      <Typography variant="h5">
+      <Typography
+        variant="h5"
+        sx={{ marginLeft: { xs: "20px", sm: "40px", lg: "80px" } }}
+      >
         <b>Comments</b>
       </Typography>
       <Paper
@@ -100,7 +103,7 @@ function Comments({ blogId }) {
           alignItems: "center",
           padding: "5px",
           width: "90%",
-          margin:"auto"
+          margin: "auto",
         }}
         elevation={3}
       >
@@ -151,18 +154,18 @@ function Comments({ blogId }) {
             return (
               <React.Fragment key={index}>
                 <Stack
-                  direction="row"
+                  spacing={3}
                   sx={{
-                    marginTop: "34px",
-                    marginLeft: { sm: "20%" },
-                    justifyContent:"center"
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginTop: "40px",
+                    padding: { xs: "30px" },
                   }}
-                  spacing={{xs:3, lg: 20 }}
                 >
                   <Stack
-                    direction={{sm:"row"}}
-                    spacing={3}
-                    sx={{ alignItems: "center",  }}
+                    spacing={{ xs: 10, lg: 20 }}
+                    direction="row"
+                    sx={{ alignItems: "center" }}
                   >
                     <Avatar
                       src={comment.user.photo}
@@ -170,38 +173,40 @@ function Comments({ blogId }) {
                       sx={{
                         width: "40px",
                         height: "40px",
-                        borderRadius: "50%",
                       }}
                     />
                     <Typography variant="body1">
                       <b>{comment.user.name}</b>
                     </Typography>
+                    {comment.user.id === auth.currentUser.uid && (
+                      <IconButton
+                        onClick={() => {
+                          console.log("Comment ID being passed:", comment.id);
+                          deleteHandler(comment.id);
+                        }}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    )}
+                  </Stack>
+
+                  <Stack sx={{ textAlign: "center" }}>
                     <Typography sx={{ opacity: "60%" }}>
                       {timeAgo(comment.timestamp)}
                     </Typography>
+                    <Box sx={{ display: "flex", justifyContent: "center" }}>
+                      <Typography
+                        variant="subtitle1"
+                        sx={{
+                          textAlign: "justify",
+                          width: { lg: "50%" },
+                        }}
+                      >
+                        {comment.comments}
+                      </Typography>
+                    </Box>
                   </Stack>
-                  {comment.user.id === auth.currentUser.uid && (
-                    <IconButton
-                      onClick={() => {
-                        console.log("Comment ID being passed:", comment.id);
-                        deleteHandler(comment.id);
-                      }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  )}
                 </Stack>
-
-                <Typography
-                  variant="subtitle1"
-                  sx={{
-                    textAlign: "justify",
-                    width: { lg: "50%" },
-                    margin: "auto",
-                  }}
-                >
-                  {comment.comments}
-                </Typography>
               </React.Fragment>
             );
           })}
