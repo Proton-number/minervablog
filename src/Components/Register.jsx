@@ -9,7 +9,6 @@ import {
   TextField,
   Paper,
 } from "@mui/material";
-import loginImg from "/src/images/Mail sent-pana.png";
 import GoogleIcon from "@mui/icons-material/Google";
 import { motion } from "framer-motion";
 import { signInWithPopup } from "firebase/auth";
@@ -122,7 +121,12 @@ function Register({ setLoggedIn }) {
             delay: 0.2,
             ease: [0, 0.71, 0.2, 1.01],
           }}
-          sx={{ marginTop: { xs: "80px" } }}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100vh",
+          }}
         >
           <ThemeProvider theme={signupFont}>
             <Paper
@@ -134,18 +138,6 @@ function Register({ setLoggedIn }) {
                 sx={{ alignItems: "center" }}
                 spacing={{ sm: 6, lg: 10 }}
               >
-                <Box
-                  src={loginImg}
-                  sx={{
-                    width: { xs: "240px", sm: "330px", lg: "460px" },
-                    height: { xs: "230px", sm: "330px", lg: "460px" },
-                  }}
-                  component={motion.img}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5 }}
-                />
-
                 {showLogin ? (
                   //  SIGN UP PART
                   <Stack sx={{ textAlign: "center" }} spacing={2}>
