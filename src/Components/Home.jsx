@@ -7,7 +7,6 @@ import {
   ThemeProvider,
   Button,
 } from "@mui/material";
-import { Card, CardCover, CardContent } from "@mui/joy";
 import img1 from "/src/images/pexels-ksenia-chernaya-5716296.jpg";
 import img2 from "/src/images/pexels-cottonbro-studio-4778407.jpg";
 import { motion } from "framer-motion";
@@ -44,8 +43,6 @@ function Home() {
             transform: "translate(-50%, -50%)",
             color: "white",
             display: "flex",
-            // justifyContent: "center",
-            // alignItems: "center",
             width: { xs: "90%", sm: "80%", lg: "70%" },
             textAlign: "center",
           }}
@@ -72,7 +69,7 @@ function Home() {
       {/* INSPIRING BLOG STACK */}
       <Stack
         spacing={{ xs: 4, sm: 8, lg: 0 }}
-        direction={{ sm: "row" }}
+        direction={{xs:"column-reverse", sm: "row" }}
         sx={{
           padding: { xs: "20px", sm: "", lg: "100px" },
           display: "flex",

@@ -84,7 +84,9 @@ function NavMobile({ loggedIn, setLoggedIn }) {
       <Drawer
         PaperProps={{
           sx: {
-            backgroundColor: "hsl(0, 0%, 55%)",
+            background: "rgba(126,113,94,0.5)",
+            backdropFilter: "blur(6px)",
+            border: "1px solid rgba(126,113,94,0.25)",
           },
         }}
         id="drawer"
