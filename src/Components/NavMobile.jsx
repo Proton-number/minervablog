@@ -128,7 +128,7 @@ function NavMobile({ loggedIn, setLoggedIn }) {
                   variant="h6"
                   sx={{ cursor: "pointer" }}
                 >
-                  Sign Up
+                  Sign In
                 </Typography>
               </Link>
             ) : (

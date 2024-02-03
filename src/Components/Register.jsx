@@ -8,8 +8,9 @@ import {
   Button,
   TextField,
   Paper,
+  Divider,
+  IconButton,
 } from "@mui/material";
-import GoogleIcon from "@mui/icons-material/Google";
 import { motion } from "framer-motion";
 import { signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../Config/Firebase";
@@ -19,6 +20,10 @@ import {
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { bouncy } from "ldrs";
+import EmailIcon from "@mui/icons-material/Email";
+import InputAdornment from "@mui/material/InputAdornment";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 function Register({ setLoggedIn }) {
   const [showLogin, setShowLogin] = useState(true);
@@ -107,6 +112,9 @@ function Register({ setLoggedIn }) {
     setTimeout(() => isLoading(false), 2590);
   }, []);
 
+  const [loginShowPassword, loginSetShowPassword] = useState(true);
+  const [signUpShowPassword, signUpSetShowPassword] = useState(true);
+
   return (
     <>
       {loading ? (
@@ -131,20 +139,31 @@ function Register({ setLoggedIn }) {
           <ThemeProvider theme={signupFont}>
             <Paper
               elevation={4}
-              sx={{ padding: { xs: "24px", sm: "30px", lg: "40px" } }}
+              sx={{ padding: { xs: "24px", sm: "30px", lg: "60px" } }}
             >
               <Stack
                 direction={{ sm: "row" }}
                 sx={{ alignItems: "center" }}
                 spacing={{ sm: 6, lg: 10 }}
               >
-                {showLogin ? (
+                {!showLogin ? (
                   //  SIGN UP PART
-                  <Stack sx={{ textAlign: "center" }} spacing={2}>
+                  <Stack
+                    sx={{ textAlign: "center", alignItems: "center" }}
+                    spacing={2}
+                  >
                     <Typography variant="h4">
                       <b>SIGN UP</b>
                     </Typography>
                     <TextField
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="start">
+                            <EmailIcon />
+                          </InputAdornment>
+                        ),
+                      }}
+                      variant="standard"
                       label="Email"
                       type="email"
                       value={signUp.email}
@@ -170,8 +189,32 @@ function Register({ setLoggedIn }) {
                       }
                     />
                     <TextField
-                      label="Password"
-                      type="password"
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="start">
+                            {signUpShowPassword ? (
+                              <IconButton
+                                onClick={() => {
+                                  signUpSetShowPassword(false);
+                                }}
+                              >
+                                <VisibilityOff />
+                              </IconButton>
+                            ) : (
+                              <IconButton
+                                onClick={() => {
+                                  signUpSetShowPassword(true);
+                                }}
+                              >
+                                <Visibility />
+                              </IconButton>
+                            )}
+                          </InputAdornment>
+                        ),
+                      }}
+                      variant="standard"
+                      label="Password..."
+                      type={!signUpShowPassword ? "password" : "text"}
                       value={signUp.password}
                       onChange={(e) =>
                         setSignUp({ ...signUp, password: e.target.value })
@@ -198,6 +241,9 @@ function Register({ setLoggedIn }) {
                       onClick={signUpBtn}
                       variant="contained"
                       sx={{
+                        borderRadius: "20px",
+                        width: "60%",
+                        padding: "10px",
                         backgroundColor: "hsl(182, 56%, 58%)",
                         "&:hover": { backgroundColor: "hsl(184, 49%, 45%)" },
                       }}
@@ -205,25 +251,46 @@ function Register({ setLoggedIn }) {
                     >
                       Sign Up
                     </Button>
-                    <Typography sx={{ opacity: "60%" }}>
-                      Or register with your Google account
-                    </Typography>
-                    <Button
-                      sx={{
-                        backgroundColor: "hsl(182, 56%, 58%)",
-                        "&:hover": { backgroundColor: "hsl(184, 49%, 45%)" },
-                      }}
-                      disableElevation
-                      variant="contained"
-                      endIcon={<GoogleIcon />}
-                      onClick={btnHandler}
+                    <Stack
+                      spacing={1}
+                      direction="row"
+                      sx={{ alignItems: "center", justifyContent: "center" }}
                     >
-                      Sign Up with{" "}
-                    </Button>
+                      <Divider sx={{ width: "100%" }} />
+                      <Typography sx={{ opacity: "60%" }}>or</Typography>
+                      <Divider sx={{ width: "100%" }} />
+                    </Stack>
+                    <Box sx={{ cursor: "pointer" }} onClick={btnHandler}>
+                      <Stack direction="row" spacing={2}>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          preserveAspectRatio="xMidYMid"
+                          viewBox="0 0 256 262"
+                        >
+                          <path
+                            fill="#4285F4"
+                            d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"
+                          ></path>
+                          <path
+                            fill="#34A853"
+                            d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"
+                          ></path>
+                          <path
+                            fill="#FBBC05"
+                            d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782"
+                          ></path>
+                          <path
+                            fill="#EB4335"
+                            d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"
+                          ></path>
+                        </svg>
+                        <Typography> Sign Up with Google</Typography>
+                      </Stack>
+                    </Box>
                     <Typography>
                       Do you have an account?
                       <span
-                        onClick={() => setShowLogin(false)}
+                        onClick={() => setShowLogin(true)}
                         style={{
                           color: "hsl(184, 49%, 45%)",
                           cursor: "pointer",
@@ -236,11 +303,22 @@ function Register({ setLoggedIn }) {
                   </Stack>
                 ) : (
                   // LOGIN PART
-                  <Stack sx={{ textAlign: "center" }} spacing={2}>
+                  <Stack
+                    sx={{ textAlign: "center", alignItems: "center" }}
+                    spacing={2}
+                  >
                     <Typography variant="h4">
                       <b>LOGIN</b>
                     </Typography>
                     <TextField
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="start">
+                            <EmailIcon />
+                          </InputAdornment>
+                        ),
+                      }}
+                      variant="standard"
                       label="Email..."
                       type="email"
                       value={login.email}
@@ -253,8 +331,32 @@ function Register({ setLoggedIn }) {
                       }
                     />
                     <TextField
+                      InputProps={{
+                        endAdornment: (
+                          <InputAdornment position="start">
+                            {loginShowPassword ? (
+                              <IconButton
+                                onClick={() => {
+                                  loginSetShowPassword(false);
+                                }}
+                              >
+                                <VisibilityOff />
+                              </IconButton>
+                            ) : (
+                              <IconButton
+                                onClick={() => {
+                                  loginSetShowPassword(true);
+                                }}
+                              >
+                                <Visibility />
+                              </IconButton>
+                            )}
+                          </InputAdornment>
+                        ),
+                      }}
+                      variant="standard"
                       label="Password..."
-                      type="password"
+                      type={!loginShowPassword ? "password" : "text"}
                       value={login.password}
                       onChange={(e) =>
                         setLogin({ ...login, password: e.target.value })
@@ -277,10 +379,29 @@ function Register({ setLoggedIn }) {
                       }
                       error={error.loginPassword}
                     />
+                    <Typography
+                      variant="subtitle2"
+                      sx={{
+                        opacity: "60%",
+                        cursor: "pointer",
+                        "&:hover": {
+                          textDecoration: "underline",
+                          opacity: "100%",
+                        },
+                      }}
+                      onClick={() => {
+                        navigate("/forgotpassword");
+                      }}
+                    >
+                      Forgot password?
+                    </Typography>
                     <Button
                       onClick={loginBtn}
                       variant="contained"
                       sx={{
+                        borderRadius: "20px",
+                        width: "60%",
+                        padding: "10px",
                         backgroundColor: "hsl(182, 56%, 58%)",
                         "&:hover": { backgroundColor: "hsl(184, 49%, 45%)" },
                       }}
@@ -288,25 +409,46 @@ function Register({ setLoggedIn }) {
                     >
                       Login
                     </Button>
-                    <Typography sx={{ opacity: "60%" }}>
-                      Or login with your Google account
-                    </Typography>
-                    <Button
-                      sx={{
-                        backgroundColor: "hsl(182, 56%, 58%)",
-                        "&:hover": { backgroundColor: "hsl(184, 49%, 45%)" },
-                      }}
-                      disableElevation
-                      variant="contained"
-                      endIcon={<GoogleIcon />}
-                      onClick={btnHandler}
+                    <Stack
+                      spacing={1}
+                      direction="row"
+                      sx={{ alignItems: "center", justifyContent: "center" }}
                     >
-                      login with{" "}
-                    </Button>
+                      <Divider sx={{ width: "100%" }} />
+                      <Typography sx={{ opacity: "60%" }}>or</Typography>
+                      <Divider sx={{ width: "100%" }} />
+                    </Stack>
+                    <Box sx={{ cursor: "pointer" }} onClick={btnHandler}>
+                      <Stack direction="row" spacing={2}>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          preserveAspectRatio="xMidYMid"
+                          viewBox="0 0 256 262"
+                        >
+                          <path
+                            fill="#4285F4"
+                            d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"
+                          ></path>
+                          <path
+                            fill="#34A853"
+                            d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"
+                          ></path>
+                          <path
+                            fill="#FBBC05"
+                            d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782"
+                          ></path>
+                          <path
+                            fill="#EB4335"
+                            d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"
+                          ></path>
+                        </svg>
+                        <Typography> Login with Google</Typography>
+                      </Stack>
+                    </Box>
                     <Typography>
                       Don't have an account?
                       <span
-                        onClick={() => setShowLogin(true)}
+                        onClick={() => setShowLogin(false)}
                         style={{
                           color: "hsl(184, 49%, 45%)",
                           cursor: "pointer",

@@ -11,11 +11,10 @@ import SingleBlog from "./Components/SingleBlog";
 import About from "./Components/About";
 import LoadingComponent from "./Components/LoadingComponent";
 import { motion } from "framer-motion";
+import Forgotpassword from "./Components/Forgotpassword";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("loggedIn"));
-
-  
 
   return (
     <>
@@ -43,6 +42,7 @@ function App() {
             <Route exact path="/singleBlog/:slug" element={<SingleBlog />} />
             <Route exact path="/blog" element={<Blogs />} />
             <Route exact path="/about/:authorId" element={<About />} />
+            <Route exact path="/forgotpassword" element={<Forgotpassword />} />
           </Routes>
         </Router>
       </Box>

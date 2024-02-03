@@ -85,7 +85,7 @@ function Nav({ loggedIn, setLoggedIn }) {
                 }}
               >
                 <Typography variant="h6" sx={{ cursor: "pointer" }}>
-                  Sign Up
+                  Sign In
                 </Typography>
               </Link>
             ) : (
