@@ -18,8 +18,10 @@ import { auth } from "../Config/Firebase";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { motion } from "framer-motion";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
-function NavMobile({ loggedIn, setLoggedIn }) {
+function NavMobile({ loggedIn, setLoggedIn, mode, setMode }) {
   const [isDrawerOpen, setisDrawerOpen] = useState(false);
 
   let navigate = useNavigate();
@@ -53,8 +55,9 @@ function NavMobile({ loggedIn, setLoggedIn }) {
         id="mobileNav"
         sx={{
           padding: 1.2,
-          backgroundColor: location.pathname === "/" ? "transparent" : "white",
-          color: location.pathname === "/" ? "white" : "black",
+          backgroundColor:
+            location.pathname === "/" || !mode ? "transparent" : "transparent",
+          color: location.pathname === "/" || !mode ? "white" : "black",
           position: location.pathname === "/" ? "absolute" : "fixed",
         }}
         elevation={0}
@@ -66,18 +69,40 @@ function NavMobile({ loggedIn, setLoggedIn }) {
             </Typography>
           </ThemeProvider>
 
-          <IconButton
-            edge="start"
-            aria-label="menu"
-            onClick={() => setisDrawerOpen(true)}
-          >
-            <MenuIcon
-              fontSize="large"
-              sx={{
-                color: location.pathname === "/" ? "white" : "black",
-              }}
-            />
-          </IconButton>
+          <Stack spacing={0.5} direction="row" sx={{ alignItems: "center" }}>
+            {mode ? (
+              <IconButton onClick={() => setMode(false)}>
+                <DarkModeIcon
+                  sx={{
+                    display: location.pathname === "/" ? "none" : "block",
+                    color: mode ? "black" : "white",
+                  }}
+                />
+              </IconButton>
+            ) : (
+              <IconButton onClick={() => setMode(true)}>
+                <LightModeIcon
+                  sx={{
+                    color: mode ? "black" : "white",
+                    display: location.pathname === "/" ? "none" : "block",
+                  }}
+                />
+              </IconButton>
+            )}
+
+            <IconButton
+              edge="start"
+              aria-label="menu"
+              onClick={() => setisDrawerOpen(true)}
+            >
+              <MenuIcon
+                fontSize="large"
+                sx={{
+                  color: location.pathname === "/" || !mode ? "white" : "black",
+                }}
+              />
+            </IconButton>
+          </Stack>
         </Toolbar>
       </AppBar>
 

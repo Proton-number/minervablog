@@ -25,7 +25,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
-function Register({ setLoggedIn }) {
+function Register({ setLoggedIn, mode }) {
   const [showLogin, setShowLogin] = useState(true);
   const [signUp, setSignUp] = useState({
     email: "",
@@ -55,6 +55,11 @@ function Register({ setLoggedIn }) {
       });
     } catch (err) {
       console.log(err);
+      if (err.code === "auth/account-exists-with-different-credential") {
+        alert(
+          "An account with this Google email address already exists. Please sign in using the same method."
+        );
+      }
     }
   };
 
@@ -66,6 +71,11 @@ function Register({ setLoggedIn }) {
       navigate("/blog");
     } catch (err) {
       console.log(err);
+      if (err.code === "auth/email-already-in-use") {
+        alert(
+          "The email address is already in use. Please use a different email."
+        );
+      }
     }
     if (signUp.email.trim() === "" || !signUp.email.includes("@")) {
       setError((prevError) => ({ ...prevError, email: true }));
@@ -88,6 +98,9 @@ function Register({ setLoggedIn }) {
       navigate("/blog");
     } catch (err) {
       console.log(err);
+      if (err.code === "auth/invalid-credential") {
+        alert("Invalid Email or Password.");
+      }
     }
     if (login.email.trim() === "" || !login.email.includes("@")) {
       setError((prevError) => ({ ...prevError, loginEmail: true }));
@@ -106,6 +119,11 @@ function Register({ setLoggedIn }) {
     typography: {
       fontFamily: "Signika, sans-serif",
     },
+    palette: {
+      primary: {
+        main: mode ? "hsl(0, 0%, 13%)" : "#ffffff",
+      },
+    },
   });
 
   useEffect(() => {
@@ -118,7 +136,21 @@ function Register({ setLoggedIn }) {
   return (
     <>
       {loading ? (
-        <l-bouncy size="45" speed="1.75" color="hsl(229, 100%, 23%)"></l-bouncy>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: !mode ? "hsl(0, 0%, 15%)" : "white",
+            height: "100vh",
+          }}
+        >
+          <l-bouncy
+            size="45"
+            speed="1.75"
+            color={mode ? "black" : "white"}
+          ></l-bouncy>
+        </Box>
       ) : (
         <Box
           component={motion.div}
@@ -134,12 +166,18 @@ function Register({ setLoggedIn }) {
             justifyContent: "center",
             alignItems: "center",
             height: "100vh",
+            backgroundColor: !mode ? "hsl(0, 0%, 15%)" : "white",
           }}
         >
           <ThemeProvider theme={signupFont}>
             <Paper
-              elevation={4}
-              sx={{ padding: { xs: "24px", sm: "30px", lg: "60px" } }}
+              elevation={8}
+              sx={{
+                padding: { xs: "24px", sm: "30px", lg: "60px" },
+                color: mode ? "black" : "white",
+                backgroundColor: !mode ? "hsl(0, 0%, 20%)" : "white",
+                borderRadius: "30px",
+              }}
             >
               <Stack
                 direction={{ sm: "row" }}
@@ -148,46 +186,60 @@ function Register({ setLoggedIn }) {
               >
                 {!showLogin ? (
                   //  SIGN UP PART
-                  <Stack
-                    sx={{ textAlign: "center", alignItems: "center" }}
-                    spacing={2}
-                  >
+                  <Stack sx={{ textAlign: "center" }} spacing={2}>
                     <Typography variant="h4">
                       <b>SIGN UP</b>
                     </Typography>
-                    <TextField
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="start">
-                            <EmailIcon />
-                          </InputAdornment>
-                        ),
-                      }}
-                      variant="standard"
-                      label="Email"
-                      type="email"
-                      value={signUp.email}
-                      onChange={(e) =>
-                        setSignUp({ ...signUp, email: e.target.value })
-                      }
-                      error={error.email}
-                      helperText={
-                        error.email ? (
-                          <motion.div
-                            initial={{ opacity: 0, y: -10 }}
-                            animate={{
-                              opacity: 1,
-                              y: 0,
-                              transition: { duration: 0.25 },
-                            }}
+                    <ThemeProvider theme={signupFont}>
+                      <TextField
+                        color="primary"
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="start">
+                              <EmailIcon
+                                sx={{ color: mode ? "grey" : "white" }}
+                              />
+                            </InputAdornment>
+                          ),
+                          inputProps: {
+                            style: {
+                              color: mode ? "black" : "white",
+                            },
+                          },
+                        }}
+                        variant="standard"
+                        label={
+                          <Typography
+                            variant="body2"
+                            sx={{ color: mode ? "black" : "white" }}
                           >
-                            Enter a valid email address
-                          </motion.div>
-                        ) : (
-                          ""
-                        )
-                      }
-                    />
+                            Email...
+                          </Typography>
+                        }
+                        type="email"
+                        value={signUp.email}
+                        onChange={(e) =>
+                          setSignUp({ ...signUp, email: e.target.value })
+                        }
+                        error={error.email}
+                        helperText={
+                          error.email ? (
+                            <motion.p
+                              initial={{ opacity: 0, y: -10 }}
+                              animate={{
+                                opacity: 1,
+                                y: 0,
+                                transition: { duration: 0.25 },
+                              }}
+                            >
+                              Enter a valid email address
+                            </motion.p>
+                          ) : (
+                            ""
+                          )
+                        }
+                      />
+                    </ThemeProvider>
                     <TextField
                       InputProps={{
                         endAdornment: (
@@ -198,7 +250,9 @@ function Register({ setLoggedIn }) {
                                   signUpSetShowPassword(false);
                                 }}
                               >
-                                <VisibilityOff />
+                                <VisibilityOff
+                                  sx={{ color: mode ? "grey" : "white" }}
+                                />
                               </IconButton>
                             ) : (
                               <IconButton
@@ -206,22 +260,36 @@ function Register({ setLoggedIn }) {
                                   signUpSetShowPassword(true);
                                 }}
                               >
-                                <Visibility />
+                                <Visibility
+                                  sx={{ color: mode ? "grey" : "white" }}
+                                />
                               </IconButton>
                             )}
                           </InputAdornment>
                         ),
+                        inputProps: {
+                          style: {
+                            color: mode ? "black" : "white",
+                          },
+                        },
                       }}
                       variant="standard"
-                      label="Password..."
-                      type={!signUpShowPassword ? "password" : "text"}
+                      label={
+                        <Typography
+                          variant="body2"
+                          sx={{ color: mode ? "black" : "white" }}
+                        >
+                          Password...
+                        </Typography>
+                      }
+                      type={signUpShowPassword ? "password" : "text"}
                       value={signUp.password}
                       onChange={(e) =>
                         setSignUp({ ...signUp, password: e.target.value })
                       }
                       helperText={
                         error.password ? (
-                          <motion.div
+                          <motion.p
                             initial={{ opacity: 0, y: -10 }}
                             animate={{
                               opacity: 1,
@@ -230,38 +298,50 @@ function Register({ setLoggedIn }) {
                             }}
                           >
                             Enter a valid Password
-                          </motion.div>
+                          </motion.p>
                         ) : (
-                          "Password should be at least 6 characters"
+                          <motion.p style={{ color: mode ? "black" : "white" }}>
+                            Password should be at least 6 characters
+                          </motion.p>
                         )
                       }
                       error={error.password}
                     />
-                    <Button
-                      onClick={signUpBtn}
-                      variant="contained"
-                      sx={{
-                        borderRadius: "20px",
-                        width: "60%",
-                        padding: "10px",
-                        backgroundColor: "hsl(182, 56%, 58%)",
-                        "&:hover": { backgroundColor: "hsl(184, 49%, 45%)" },
-                      }}
-                      disableElevation
-                    >
-                      Sign Up
-                    </Button>
+                    <Box>
+                      <Button
+                        onClick={signUpBtn}
+                        variant="contained"
+                        sx={{
+                          borderRadius: "20px",
+                          width: "60%",
+                          padding: "10px",
+                          backgroundColor: "hsl(182, 56%, 58%)",
+                          "&:hover": { backgroundColor: "hsl(184, 49%, 45%)" },
+                        }}
+                        disableElevation
+                      >
+                        Sign Up
+                      </Button>
+                    </Box>
                     <Stack
-                      spacing={1}
+                      spacing={2}
                       direction="row"
-                      sx={{ alignItems: "center", justifyContent: "center" }}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
                     >
-                      <Divider sx={{ width: "100%" }} />
+                      <Divider sx={{ width: "40%" }} />
                       <Typography sx={{ opacity: "60%" }}>or</Typography>
-                      <Divider sx={{ width: "100%" }} />
+                      <Divider sx={{ width: "40%" }} />
                     </Stack>
                     <Box sx={{ cursor: "pointer" }} onClick={btnHandler}>
-                      <Stack direction="row" spacing={2}>
+                      <Stack
+                        direction="row"
+                        sx={{ justifyContent: "center" }}
+                        spacing={2}
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           preserveAspectRatio="xMidYMid"
@@ -303,10 +383,7 @@ function Register({ setLoggedIn }) {
                   </Stack>
                 ) : (
                   // LOGIN PART
-                  <Stack
-                    sx={{ textAlign: "center", alignItems: "center" }}
-                    spacing={2}
-                  >
+                  <Stack sx={{ textAlign: "center" }} spacing={2}>
                     <Typography variant="h4">
                       <b>LOGIN</b>
                     </Typography>
@@ -314,12 +391,26 @@ function Register({ setLoggedIn }) {
                       InputProps={{
                         endAdornment: (
                           <InputAdornment position="start">
-                            <EmailIcon />
+                            <EmailIcon
+                              sx={{ color: mode ? "grey" : "white" }}
+                            />
                           </InputAdornment>
                         ),
+                        inputProps: {
+                          style: {
+                            color: mode ? "black" : "white",
+                          },
+                        },
                       }}
                       variant="standard"
-                      label="Email..."
+                      label={
+                        <Typography
+                          variant="body2"
+                          sx={{ color: mode ? "black" : "white" }}
+                        >
+                          Email...
+                        </Typography>
+                      }
                       type="email"
                       value={login.email}
                       onChange={(e) =>
@@ -327,7 +418,18 @@ function Register({ setLoggedIn }) {
                       }
                       error={error.loginEmail}
                       helperText={
-                        error.loginEmail ? "Enter a valid email address" : ""
+                        error.loginEmail ? (
+                          <motion.p
+                            initial={{ opacity: 0, y: -10 }}
+                            animate={{
+                              opacity: 1,
+                              y: 0,
+                              transition: { duration: 0.25 },
+                            }}
+                          >
+                            Enter a valid email address
+                          </motion.p>
+                        ) : null
                       }
                     />
                     <TextField
@@ -340,7 +442,9 @@ function Register({ setLoggedIn }) {
                                   loginSetShowPassword(false);
                                 }}
                               >
-                                <VisibilityOff />
+                                <VisibilityOff
+                                  sx={{ color: mode ? "grey" : "white" }}
+                                />
                               </IconButton>
                             ) : (
                               <IconButton
@@ -348,22 +452,36 @@ function Register({ setLoggedIn }) {
                                   loginSetShowPassword(true);
                                 }}
                               >
-                                <Visibility />
+                                <Visibility
+                                  sx={{ color: mode ? "grey" : "white" }}
+                                />
                               </IconButton>
                             )}
                           </InputAdornment>
                         ),
+                        inputProps: {
+                          style: {
+                            color: mode ? "black" : "white",
+                          },
+                        },
                       }}
                       variant="standard"
-                      label="Password..."
-                      type={!loginShowPassword ? "password" : "text"}
+                      label={
+                        <Typography
+                          variant="body2"
+                          sx={{ color: mode ? "black" : "white" }}
+                        >
+                          Password...
+                        </Typography>
+                      }
+                      type={loginShowPassword ? "password" : "text"}
                       value={login.password}
                       onChange={(e) =>
                         setLogin({ ...login, password: e.target.value })
                       }
                       helperText={
                         error.loginPassword ? (
-                          <motion.div
+                          <motion.p
                             initial={{ opacity: 0, y: -10 }}
                             animate={{
                               opacity: 1,
@@ -372,9 +490,11 @@ function Register({ setLoggedIn }) {
                             }}
                           >
                             Enter a valid Password
-                          </motion.div>
+                          </motion.p>
                         ) : (
-                          "Password should be at least 6 characters"
+                          <motion.p style={{ color: mode ? "black" : "white" }}>
+                            Password should be at least 6 characters
+                          </motion.p>
                         )
                       }
                       error={error.loginPassword}
@@ -395,31 +515,37 @@ function Register({ setLoggedIn }) {
                     >
                       Forgot password?
                     </Typography>
-                    <Button
-                      onClick={loginBtn}
-                      variant="contained"
-                      sx={{
-                        borderRadius: "20px",
-                        width: "60%",
-                        padding: "10px",
-                        backgroundColor: "hsl(182, 56%, 58%)",
-                        "&:hover": { backgroundColor: "hsl(184, 49%, 45%)" },
-                      }}
-                      disableElevation
-                    >
-                      Login
-                    </Button>
+                    <Box>
+                      <Button
+                        onClick={loginBtn}
+                        variant="contained"
+                        sx={{
+                          borderRadius: "20px",
+                          width: "60%",
+                          padding: "10px",
+                          backgroundColor: "hsl(182, 56%, 58%)",
+                          "&:hover": { backgroundColor: "hsl(184, 49%, 45%)" },
+                        }}
+                        disableElevation
+                      >
+                        Login
+                      </Button>
+                    </Box>
                     <Stack
                       spacing={1}
                       direction="row"
                       sx={{ alignItems: "center", justifyContent: "center" }}
                     >
-                      <Divider sx={{ width: "100%" }} />
+                      <Divider sx={{ width: "40%" }} />
                       <Typography sx={{ opacity: "60%" }}>or</Typography>
-                      <Divider sx={{ width: "100%" }} />
+                      <Divider sx={{ width: "40%" }} />
                     </Stack>
                     <Box sx={{ cursor: "pointer" }} onClick={btnHandler}>
-                      <Stack direction="row" spacing={2}>
+                      <Stack
+                        direction="row"
+                        spacing={2}
+                        sx={{ justifyContent: "center" }}
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           preserveAspectRatio="xMidYMid"

@@ -30,126 +30,137 @@ function Home() {
 
   return (
     <>
-      <Box className="hero">
-        <Box className="overlay" sx={{ height: "100vh", zIndex: 1 }} />
-        <video autoPlay loop muted src={viddy} className="video-bg" />
-        <Stack
-          spacing={{ sm: 4 }}
-          sx={{
-            zIndex: 1,
-            position: "absolute",
-            left: "50%",
-            top: "50%",
-            transform: "translate(-50%, -50%)",
-            color: "white",
-            display: "flex",
-            width: { xs: "90%", sm: "80%", lg: "70%" },
-            textAlign: "center",
-          }}
-        >
-          <Typography
-            variant="h6"
+      {loading ? (
+        <Box sx={{display:"flex", justifyContent:"center",alignItems:"center", height:'100vh'}}>
+           <l-bouncy size="45" speed="1.75" color="hsl(229, 100%, 23%)"></l-bouncy>
+       </Box>
+      ) : (
+        <>
+          <Box className="hero">
+            <Box className="overlay" sx={{ height: "100vh", zIndex: 1 }} />
+            <video autoPlay loop muted src={viddy} className="video-bg" />
+            <Stack
+              spacing={{ sm: 4 }}
+              sx={{
+                zIndex: 1,
+                position: "absolute",
+                left: "50%",
+                top: "50%",
+                transform: "translate(-50%, -50%)",
+                color: "white",
+                display: "flex",
+                width: { xs: "90%", sm: "80%", lg: "70%" },
+                textAlign: "center",
+              }}
+            >
+              <Typography
+                variant="h6"
+                sx={{
+                  fontSize: { xs: "60px", sm: "50px", lg: "100px" },
+                  fontWeight: { sm: 700 },
+                  lineHeight: 1,
+                }}
+              >
+                {" "}
+                Connect with Mechanical Engineering Students
+              </Typography>
+
+              <Typography variant="body1">
+                Join our community and share your experiences as an engineering
+                student
+              </Typography>
+            </Stack>
+          </Box>
+
+          {/* INSPIRING BLOG STACK */}
+          <Stack
+            spacing={{ xs: 4, sm: 8, lg: 0 }}
+            direction={{ xs: "column-reverse", sm: "row" }}
             sx={{
-              fontSize: { xs: "60px", sm: "50px", lg: "100px" },
-              fontWeight: { sm: 700 },
-              lineHeight: 1,
+              padding: { xs: "20px", sm: "", lg: "100px" },
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+              backgroundColor: "hsl(191, 67%, 5%)",
             }}
           >
-            {" "}
-            Connect with Mechanical Engineering Students
-          </Typography>
+            <Stack
+              spacing={2}
+              sx={{
+                width: { lg: "60%" },
+                color: "hsl(27, 100%, 77%)",
+                textAlign: { xs: "center", sm: "left" },
+              }}
+            >
+              <Typography
+                variant="h1"
+                sx={{ fontSize: { xs: "66px", sm: "78px", lg: "110px" } }}
+              >
+                Inspiring Blogs
+              </Typography>
+              <Typography
+                variant="body1"
+                sx={{ width: { sm: "80%", lg: "70%" } }}
+              >
+                Be a source of inspiration for other engineering students by
+                sharing your journey and experiences. Our platform allows you to
+                inspire and motivate others in the community.
+              </Typography>
+            </Stack>
+            <Box
+              component="img"
+              src={img1}
+              sx={{
+                width: { xs: "220px", sm: "400px", lg: "500px" },
+                height: { sm: "380px", lg: "auto" },
+              }}
+            />
+          </Stack>
 
-          <Typography variant="body1">
-            Join our community and share your experiences as an engineering
-            student
-          </Typography>
-        </Stack>
-      </Box>
-
-      {/* INSPIRING BLOG STACK */}
-      <Stack
-        spacing={{ xs: 4, sm: 8, lg: 0 }}
-        direction={{xs:"column-reverse", sm: "row" }}
-        sx={{
-          padding: { xs: "20px", sm: "", lg: "100px" },
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          backgroundColor: "hsl(191, 67%, 5%)",
-        }}
-      >
-        <Stack
-          spacing={2}
-          sx={{
-            width: { lg: "60%" },
-            color: "hsl(27, 100%, 77%)",
-            textAlign: { xs: "center", sm: "left" },
-          }}
-        >
-          <Typography
-            variant="h1"
-            sx={{ fontSize: { xs: "66px", sm: "78px", lg: "110px" } }}
+          <Stack
+            spacing={{ xs: 4, sm: 8, lg: 17 }}
+            direction={{ sm: "row" }}
+            sx={{
+              padding: { xs: "20px", lg: "100px" },
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+              backgroundColor: "hsl(7, 69%, 97%)",
+            }}
           >
-            Inspiring Blogs
-          </Typography>
-          <Typography variant="body1" sx={{ width: { sm: "80%", lg: "70%" } }}>
-            Be a source of inspiration for other engineering students by sharing
-            your journey and experiences. Our platform allows you to inspire and
-            motivate others in the community.
-          </Typography>
-        </Stack>
-        <Box
-          component="img"
-          src={img1}
-          sx={{
-            width: { xs: "220px", sm: "400px", lg: "500px" },
-            height: { sm: "380px", lg: "auto" },
-          }}
-        />
-      </Stack>
-
-      <Stack
-        spacing={{ xs: 4, sm: 8, lg: 17 }}
-        direction={{ sm: "row" }}
-        sx={{
-          padding: { xs: "20px", lg: "100px" },
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-          backgroundColor: "hsl(7, 69%, 97%)",
-        }}
-      >
-        <Box
-          component="img"
-          src={img2}
-          sx={{
-            width: { xs: "220px", sm: "400px", lg: "500px" },
-            height: { sm: "380px", lg: "auto" },
-          }}
-        />
-        <Stack
-          spacing={2}
-          sx={{
-            width: { lg: "60%" },
-            color: "hsl(20, 100%, 50%)",
-            textAlign: { xs: "center", sm: "right" },
-          }}
-        >
-          <Typography
-            variant="h1"
-            sx={{ fontSize: { xs: "66px", sm: "78px", lg: "110px" } }}
-          >
-            Exclusive Resources
-          </Typography>
-          <Typography variant="body1">
-            Gain access to exclusive resources, tips, and tricks for excelling
-            in your engineering studies. Our platform provides valuable
-            resources and information to help you succeed.
-          </Typography>
-        </Stack>
-      </Stack>
+            <Box
+              component="img"
+              src={img2}
+              sx={{
+                width: { xs: "220px", sm: "400px", lg: "500px" },
+                height: { sm: "380px", lg: "auto" },
+              }}
+            />
+            <Stack
+              spacing={2}
+              sx={{
+                width: { lg: "60%" },
+                color: "hsl(20, 100%, 50%)",
+                textAlign: { xs: "center", sm: "right" },
+              }}
+            >
+              <Typography
+                variant="h1"
+                sx={{ fontSize: { xs: "66px", sm: "78px", lg: "110px" } }}
+              >
+                Exclusive Resources
+              </Typography>
+              <Typography variant="body1">
+                Gain access to exclusive resources, tips, and tricks for
+                excelling in your engineering studies. Our platform provides
+                valuable resources and information to help you succeed.
+              </Typography>
+            </Stack>
+          </Stack>
+        </>
+      )}
     </>
   );
 }

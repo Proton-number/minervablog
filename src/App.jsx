@@ -12,9 +12,11 @@ import About from "./Components/About";
 import LoadingComponent from "./Components/LoadingComponent";
 import { motion } from "framer-motion";
 import Forgotpassword from "./Components/Forgotpassword";
+import { useLocalStorage } from "@uidotdev/usehooks";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("loggedIn"));
+  const [mode, setMode] = useLocalStorage("theme",true);
 
   return (
     <>
@@ -30,13 +32,23 @@ function App() {
         }}
       >
         <Router>
-          <NavMobile loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
-          <Nav loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
+          <NavMobile
+            mode={mode}
+            setMode={setMode}
+            loggedIn={loggedIn}
+            setLoggedIn={setLoggedIn}
+          />
+          <Nav
+            mode={mode}
+            setMode={setMode}
+            loggedIn={loggedIn}
+            setLoggedIn={setLoggedIn}
+          />
           <Routes>
             <Route
               exact
               path="/signUp"
-              element={<Register setLoggedIn={setLoggedIn} />}
+              element={<Register mode={mode} setLoggedIn={setLoggedIn} />}
             />
             <Route exact path="/" element={<Home />} />
             <Route exact path="/singleBlog/:slug" element={<SingleBlog />} />

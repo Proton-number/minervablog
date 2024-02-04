@@ -14,8 +14,10 @@ import { auth } from "../Config/Firebase";
 import { useNavigate } from "react-router-dom";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { motion } from "framer-motion";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
-function Nav({ loggedIn, setLoggedIn }) {
+function Nav({ loggedIn, setLoggedIn, mode, setMode }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -47,8 +49,9 @@ function Nav({ loggedIn, setLoggedIn }) {
         id="desktopNav"
         sx={{
           padding: 1.2,
-          backgroundColor: location.pathname === "/" ? "transparent" : "white",
-          color: location.pathname === "/" ? "white" : "black",
+          backgroundColor:
+            location.pathname === "/" || !mode ? "transparent" : "transparent",
+          color: location.pathname === "/" || !mode ? "white" : "black",
           position: location.pathname === "/" ? "absolute" : "fixed",
         }}
         elevation={0}
@@ -64,11 +67,31 @@ function Nav({ loggedIn, setLoggedIn }) {
           </ThemeProvider>
 
           <Stack spacing={2} direction="row" sx={{ alignItems: "center" }}>
+            {mode ? (
+              <IconButton onClick={() => setMode(false)}>
+                <DarkModeIcon
+                  sx={{
+                    display: location.pathname === "/" ? "none" : "block",
+                    color: mode ? "black" : "white",
+                  }}
+                />
+              </IconButton>
+            ) : (
+              <IconButton onClick={() => setMode(true)}>
+                <LightModeIcon
+                  sx={{
+                    color: mode ? "black" : "white",
+                    display: location.pathname === "/" ? "none" : "block",
+                  }}
+                />
+              </IconButton>
+            )}
+
             <Link
               to="/"
               style={{
                 textDecoration: "none",
-                color: location.pathname === "/" ? "white" : "black",
+                color: location.pathname === "/" || !mode ? "white" : "black",
               }}
             >
               <Typography variant="h6" sx={{ cursor: "pointer" }}>
@@ -81,7 +104,7 @@ function Nav({ loggedIn, setLoggedIn }) {
                 to="/signUp"
                 style={{
                   textDecoration: "none",
-                  color: location.pathname === "/" ? "white" : "black",
+                  color: location.pathname === "/" || !mode ? "white" : "black",
                 }}
               >
                 <Typography variant="h6" sx={{ cursor: "pointer" }}>
@@ -94,7 +117,8 @@ function Nav({ loggedIn, setLoggedIn }) {
                   to="/blog"
                   style={{
                     textDecoration: "none",
-                    color: location.pathname === "/" ? "white" : "black",
+                    color:
+                      location.pathname === "/" || !mode ? "white" : "black",
                   }}
                 >
                   <Typography variant="h6" sx={{ cursor: "pointer" }}>
@@ -105,7 +129,8 @@ function Nav({ loggedIn, setLoggedIn }) {
                 <IconButton onClick={logOut}>
                   <LogoutIcon
                     sx={{
-                      color: location.pathname === "/" ? "white" : "black",
+                      color:
+                        location.pathname === "/" || !mode ? "white" : "black",
                     }}
                   />
                 </IconButton>
