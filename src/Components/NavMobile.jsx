@@ -54,13 +54,17 @@ function NavMobile({ loggedIn, setLoggedIn, mode, setMode }) {
         transition={{ delay: 3.1, duration: 0.5 }}
         id="mobileNav"
         sx={{
-          padding: 1.2,
+          padding: 0 - 2,
           backgroundColor:
-            location.pathname === "/" || !mode ? "transparent" : "transparent",
+            location.pathname === "/"
+              ? "transparent"
+              : !mode
+              ? "hsl(0, 0%, 15%)"
+              : "white",
           color: location.pathname === "/" || !mode ? "white" : "black",
           position: location.pathname === "/" ? "absolute" : "fixed",
         }}
-        elevation={0}
+        elevation={4}
       >
         <Toolbar>
           <ThemeProvider theme={font}>
@@ -109,9 +113,8 @@ function NavMobile({ loggedIn, setLoggedIn, mode, setMode }) {
       <Drawer
         PaperProps={{
           sx: {
-            background: "rgba(126,113,94,0.5)",
-            backdropFilter: "blur(6px)",
-            border: "1px solid rgba(126,113,94,0.25)",
+            backgroundColor:
+              location.pathname === "/" ? "white" : !mode ? "black" : "white",
           },
         }}
         id="drawer"
@@ -126,15 +129,33 @@ function NavMobile({ loggedIn, setLoggedIn, mode, setMode }) {
               aria-label="close-icon"
               onClick={() => setisDrawerOpen(false)}
             >
-              <CloseIcon fontSize="large" sx={{ color: "white" }} />
+              <CloseIcon
+                fontSize="large"
+                sx={{
+                  color:
+                    location.pathname === "/"
+                      ? "black"
+                      : !mode
+                      ? "white"
+                      : "black",
+                }}
+              />
             </IconButton>
           </Toolbar>
 
-          <Stack
-            spacing={8}
-            style={{ textAlign: "center", color: "white", padding: "35px" }}
-          >
-            <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+          <Stack spacing={8} style={{ textAlign: "center", padding: "35px" }}>
+            <Link
+              to="/"
+              style={{
+                textDecoration: "none",
+                color:
+                  location.pathname === "/"
+                    ? "black"
+                    : !mode
+                    ? "white"
+                    : "black",
+              }}
+            >
               <Typography
                 onClick={() => setisDrawerOpen(false)}
                 variant="h6"
@@ -146,7 +167,15 @@ function NavMobile({ loggedIn, setLoggedIn, mode, setMode }) {
             {!loggedIn ? (
               <Link
                 to="/signUp"
-                style={{ textDecoration: "none", color: "white" }}
+                style={{
+                  textDecoration: "none",
+                  color:
+                    location.pathname === "/"
+                      ? "black"
+                      : !mode
+                      ? "white"
+                      : "black",
+                }}
               >
                 <Typography
                   onClick={() => setisDrawerOpen(false)}
@@ -160,7 +189,15 @@ function NavMobile({ loggedIn, setLoggedIn, mode, setMode }) {
               <>
                 <Link
                   to="/blog"
-                  style={{ textDecoration: "none", color: "white" }}
+                  style={{
+                    textDecoration: "none",
+                    color:
+                      location.pathname === "/"
+                        ? "black"
+                        : !mode
+                        ? "white"
+                        : "black",
+                  }}
                 >
                   <Typography
                     onClick={() => setisDrawerOpen(false)}
@@ -172,7 +209,16 @@ function NavMobile({ loggedIn, setLoggedIn, mode, setMode }) {
                 </Link>
                 <IconButton onClick={logOut}>
                   {" "}
-                  <LogoutIcon sx={{ color: "white" }} />
+                  <LogoutIcon
+                    sx={{
+                      color:
+                        location.pathname === "/"
+                          ? "black"
+                          : !mode
+                          ? "white"
+                          : "black",
+                    }}
+                  />
                 </IconButton>
               </>
             )}

@@ -4,18 +4,17 @@ import sanityClient from "../client";
 import { Link, useParams } from "react-router-dom";
 import imageUrlBuilder from "@sanity/image-url";
 import BlockContent from "@sanity/block-content-to-react";
-import { bouncy } from "ldrs";
 import { motion } from "framer-motion";
 import Comments from "./Comments";
+import Loader from "./Loader";
 
 const builder = imageUrlBuilder(sanityClient);
 function urlFor(source) {
   return builder.image(source);
 }
 
-function SingleBlog({ loggedIn, setLoggedIn }) {
+function SingleBlog({ mode }) {
   const [singleBlog, setSingleBlog] = useState(null);
-  bouncy.register();
 
   const { slug } = useParams();
 
@@ -50,9 +49,9 @@ function SingleBlog({ loggedIn, setLoggedIn }) {
 
   if (!singleBlog)
     return (
-      <Box>
-        <l-bouncy size="45" speed="1.75" color="hsl(229, 100%, 23%)"></l-bouncy>
-      </Box>
+      <>
+        <Loader mode={mode} />
+      </>
     );
 
   // STYLING THE IMAGE IN BLOCK CONTENT
@@ -92,11 +91,16 @@ function SingleBlog({ loggedIn, setLoggedIn }) {
 
   // MAIN CONTENT
   return (
-    <>
+    <Box
+      sx={{
+        color: mode ? "black" : "white",
+        backgroundColor: !mode ? "hsl(0, 0%, 15%)" : "white",
+      }}
+    >
       <Stack
         component={motion.div}
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{
           duration: 1,
           delay: 0.2,
@@ -108,10 +112,6 @@ function SingleBlog({ loggedIn, setLoggedIn }) {
             xs: "50px",
             sm: "60px",
             lg: "100px",
-          },
-          marginTop: {
-            xs: "40px",
-            lg: 0,
           },
         }}
       >
@@ -168,8 +168,8 @@ function SingleBlog({ loggedIn, setLoggedIn }) {
           serializers={customSerializers}
         />
       </Stack>
-      <Comments blogId={slug} />
-    </>
+      <Comments blogId={slug} mode={mode} />
+    </Box>
   );
 }
 

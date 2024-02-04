@@ -2,13 +2,11 @@ import { Box, Stack, Typography, Paper, Grid } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import sanityClient from "../client";
 import { Link } from "react-router-dom";
-import { bouncy } from "ldrs";
 import { motion } from "framer-motion";
+import Loader from "./Loader";
 
-
-function Blogs() {
+function Blogs({ mode }) {
   const [blogs, setBlogs] = useState(null);
-  bouncy.register();
 
   useEffect(() => {
     sanityClient
@@ -39,9 +37,9 @@ function Blogs() {
 
   if (!blogs)
     return (
-      <Box>
-        <l-bouncy size="45" speed="1.75" color="hsl(229, 100%, 23%)"></l-bouncy>
-      </Box>
+      <>
+        <Loader mode={mode} />
+      </>
     );
 
   return (
@@ -50,28 +48,40 @@ function Blogs() {
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2, duration: 1 }}
+      sx={{ backgroundColor: !mode ? "hsl(0, 0%, 15%)" : "white" }}
     >
-     
       <Grid
-        columns={{sm:7, lg: 10 }}
+        columns={{ sm: 7, lg: 10 }}
         container
         spacing={4}
         sx={{
           display: "flex",
           justifyContent: "center",
           padding: { xs: "40px", sm: "50px", lg: "60px" },
-          marginTop: { xs: "40px", sm: "30px", lg: 0 },
         }}
       >
         {blogs &&
           blogs.map((blog, index) => (
-            <Grid item key={index} sm={3} lg={5}>
+            <Grid
+              sx={{ marginTop: { xs: "40px", sm: "30px", lg: 0 } }}
+              item
+              key={index}
+              sm={3}
+              lg={5}
+            >
               <Link
                 to={"/singleBlog/" + blog.slug.current}
                 style={{ color: "inherit", textDecoration: "none" }}
                 key={blog.slug.current}
               >
-                <Paper elevation={8} sx={{ borderRadius: "15px" }}>
+                <Paper
+                  elevation={8}
+                  sx={{
+                    borderRadius: "15px",
+                    color: mode ? "black" : "white",
+                    backgroundColor: !mode ? "hsl(0, 0%, 20%)" : "white",
+                  }}
+                >
                   <Stack>
                     <Box
                       component={motion.div}

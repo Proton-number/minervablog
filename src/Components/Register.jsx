@@ -24,6 +24,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Loader from "./Loader";
 
 function Register({ setLoggedIn, mode }) {
   const [showLogin, setShowLogin] = useState(true);
@@ -136,21 +137,9 @@ function Register({ setLoggedIn, mode }) {
   return (
     <>
       {loading ? (
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: !mode ? "hsl(0, 0%, 15%)" : "white",
-            height: "100vh",
-          }}
-        >
-          <l-bouncy
-            size="45"
-            speed="1.75"
-            color={mode ? "black" : "white"}
-          ></l-bouncy>
-        </Box>
+        <>
+          <Loader mode={mode} />
+        </>
       ) : (
         <Box
           component={motion.div}

@@ -16,7 +16,7 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("loggedIn"));
-  const [mode, setMode] = useLocalStorage("theme",true);
+  const [mode, setMode] = useLocalStorage("theme", true);
 
   return (
     <>
@@ -50,10 +50,18 @@ function App() {
               path="/signUp"
               element={<Register mode={mode} setLoggedIn={setLoggedIn} />}
             />
-            <Route exact path="/" element={<Home />} />
-            <Route exact path="/singleBlog/:slug" element={<SingleBlog />} />
-            <Route exact path="/blog" element={<Blogs />} />
-            <Route exact path="/about/:authorId" element={<About />} />
+            <Route exact path="/" element={<Home mode={mode} />} />
+            <Route
+              exact
+              path="/singleBlog/:slug"
+              element={<SingleBlog mode={mode} />}
+            />
+            <Route exact path="/blog" element={<Blogs mode={mode} />} />
+            <Route
+              exact
+              path="/about/:authorId"
+              element={<About mode={mode} />}
+            />
             <Route exact path="/forgotpassword" element={<Forgotpassword />} />
           </Routes>
         </Router>

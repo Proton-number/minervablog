@@ -10,13 +10,11 @@ import {
 import img1 from "/src/images/pexels-ksenia-chernaya-5716296.jpg";
 import img2 from "/src/images/pexels-cottonbro-studio-4778407.jpg";
 import { motion } from "framer-motion";
-import { bouncy } from "ldrs";
 import viddy from "../Components/Videos/pexels-c-technical-6334253 (1080p).mp4";
+import Loader from "./Loader";
 
-function Home() {
+function Home({ mode }) {
   const [loading, isLoading] = useState(true);
-
-  bouncy.register();
 
   const homeFont = createTheme({
     typography: {
@@ -31,9 +29,9 @@ function Home() {
   return (
     <>
       {loading ? (
-        <Box sx={{display:"flex", justifyContent:"center",alignItems:"center", height:'100vh'}}>
-           <l-bouncy size="45" speed="1.75" color="hsl(229, 100%, 23%)"></l-bouncy>
-       </Box>
+        <>
+          <Loader mode={mode} />
+        </>
       ) : (
         <>
           <Box className="hero">

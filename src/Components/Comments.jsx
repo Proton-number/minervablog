@@ -7,6 +7,8 @@ import {
   Paper,
   Button,
   IconButton,
+  createTheme,
+  ThemeProvider,
 } from "@mui/material";
 import { useLocalStorage } from "@uidotdev/usehooks";
 import React, { useState, useEffect } from "react";
@@ -22,7 +24,7 @@ import {
   where,
 } from "firebase/firestore";
 
-function Comments({ blogId }) {
+function Comments({ blogId, mode }) {
   const [comments, setComments] = useLocalStorage(`${blogId}-comments`, "");
   const [commentValues, setCommentValues] = useLocalStorage(
     `${blogId}-commentValues`,
@@ -85,11 +87,30 @@ function Comments({ blogId }) {
 
   const deleteHandler = async (id) => {
     const commentDocRef = doc(db, "comments", id);
-    await deleteDoc(commentDocRef);
+    // Optimistically update the local state
+    setCommentValues((prevComments) =>
+      prevComments.filter((comment) => comment.id !== id)
+    );
+
+    try {
+      await deleteDoc(commentDocRef);
+    } catch (error) {
+      console.error("Error deleting comment:", error);
+      // If there's an error, revert the local state back to the previous state
+      setCommentValues((prevComments) => [...prevComments]);
+    }
   };
 
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: mode ? "hsl(0, 0%, 13%)" : "#ffffff",
+      },
+    },
+  });
+
   return (
-    <Box>
+    <Box sx={{ backgroundColor: !mode ? "hsl(0, 0%, 15%)" : "white" }}>
       <Typography
         variant="h5"
         sx={{ marginLeft: { xs: "20px", sm: "40px", lg: "80px" } }}
@@ -101,11 +122,14 @@ function Comments({ blogId }) {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          padding: "5px",
-          width: "90%",
+          padding: "25px",
+          width: { xs: "75%", sm: "90%" },
           margin: "auto",
+          color: mode ? "black" : "white",
+          backgroundColor: !mode ? "hsl(0, 0%, 20%)" : "white",
+          borderRadius: "20px",
         }}
-        elevation={3}
+        elevation={5}
       >
         <Stack>
           <Stack
@@ -124,25 +148,38 @@ function Comments({ blogId }) {
                 }}
               />
             )}
-            <TextField
-              placeholder="Comment"
-              value={comments}
-              onChange={(e) => setComments(e.target.value)}
-              type="text"
-              multiline
-              rows={6}
-              sx={{
-                width: { xs: "240px", sm: "300px", lg: "600px" },
-              }}
-            />
+            <ThemeProvider theme={theme}>
+              <TextField
+                color="primary"
+                InputProps={{
+                  inputProps: {
+                    style: {
+                      color: mode ? "black" : "white",
+                      overflowY: "hidden",
+                    },
+                  },
+                }}
+                placeholder="Comment"
+                value={comments}
+                onChange={(e) => setComments(e.target.value)}
+                type="text"
+                multiline
+                rows={6}
+                sx={{
+                  width: { xs: "240px", sm: "500px", lg: "600px" },
+                }}
+              />
+            </ThemeProvider>
             <Button
               variant="contained"
               onClick={commentHandler}
               sx={{
                 textTransform: "none",
-                backgroundColor: "black",
+                color: !mode ? "black" : "white",
+                backgroundColor: mode ? "black" : "white",
                 "&:hover": {
-                  backgroundColor: "hsl(0, 0%, 13%)",
+                  backgroundColor: !mode ? "hsl(0, 0%, 13%)" : "white",
+                  color: mode ? "black" : "white",
                 },
               }}
             >
@@ -163,7 +200,7 @@ function Comments({ blogId }) {
                   }}
                 >
                   <Stack
-                    spacing={{ xs: 10, lg: 20 }}
+                    spacing={{ xs: 1.2, lg: 20 }}
                     direction="row"
                     sx={{ alignItems: "center" }}
                   >
@@ -175,7 +212,7 @@ function Comments({ blogId }) {
                         height: "40px",
                       }}
                     />
-                    <Typography variant="body1">
+                    <Typography variant="body2">
                       <b>{comment.user.name}</b>
                     </Typography>
                     {comment.user.id === auth.currentUser.uid && (
@@ -185,7 +222,7 @@ function Comments({ blogId }) {
                           deleteHandler(comment.id);
                         }}
                       >
-                        <DeleteIcon />
+                        <DeleteIcon sx={{ color: mode ? "black" : "white" }} />
                       </IconButton>
                     )}
                   </Stack>

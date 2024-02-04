@@ -11,7 +11,7 @@ function urlFor(source) {
   return builder.image(source);
 }
 
-function About() {
+function About({mode}) {
   const [author, setAuthor] = useState(null);
   bouncy.register();
 
@@ -36,7 +36,7 @@ function About() {
   if (!author)
     return (
       <Box>
-        <l-bouncy size="45" speed="1.75" color="hsl(229, 100%, 23%)"></l-bouncy>
+        <l-bouncy size="45" speed="1.75"  color={mode ? "black" : "white"}></l-bouncy>
       </Box>
     );
 
