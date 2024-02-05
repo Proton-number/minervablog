@@ -46,13 +46,13 @@ function Comments({ blogId, mode }) {
     const days = Math.floor(hours / 24);
 
     if (days > 0) {
-      return `${days} ${days === 1 ? "day" : "days"} `;
+      return `${days} ${days === 1 ? "day" : "days"} ago `;
     } else if (hours > 0) {
-      return `${hours} ${hours === 1 ? "hour" : "hours"} `;
+      return `${hours} ${hours === 1 ? "hr" : "hrs"} ago `;
     } else if (minutes > 0) {
-      return `${minutes} ${minutes === 1 ? "min" : "mins"} `;
+      return `${minutes} ${minutes === 1 ? "min" : "mins"} ago `;
     } else {
-      return `${seconds} ${seconds === 1 ? "second" : "seconds"} `;
+      return `${seconds} ${seconds === 1 ? "second" : "seconds"} ago `;
     }
   };
   const commentCollectionRef = collection(db, "comments");
@@ -110,7 +110,7 @@ function Comments({ blogId, mode }) {
   });
 
   return (
-    <Box sx={{ backgroundColor: !mode ? "hsl(0, 0%, 15%)" : "white" }}>
+    <Box>
       <Typography
         variant="h5"
         sx={{ marginLeft: { xs: "20px", sm: "40px", lg: "80px" } }}
@@ -119,23 +119,22 @@ function Comments({ blogId, mode }) {
       </Typography>
       <Paper
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
           padding: "25px",
           width: { xs: "75%", sm: "90%" },
           margin: "auto",
           color: mode ? "black" : "white",
           backgroundColor: !mode ? "hsl(0, 0%, 20%)" : "white",
           borderRadius: "20px",
+          display: "flex",
+          justifyContent: "center",
         }}
         elevation={5}
       >
-        <Stack>
+        <Stack sx={{ alignItems: "center", justifyContent: "center" }}>
           <Stack
             spacing={{ xs: 4, sm: 4 }}
             direction={{ sm: "row" }}
-            sx={{ alignItems: "center", justifyContent: "center" }}
+            sx={{ alignItems: "center" }}
           >
             {userPhoto && (
               <Avatar
@@ -155,7 +154,6 @@ function Comments({ blogId, mode }) {
                   inputProps: {
                     style: {
                       color: mode ? "black" : "white",
-                      overflowY: "hidden",
                     },
                   },
                 }}
@@ -167,6 +165,7 @@ function Comments({ blogId, mode }) {
                 rows={6}
                 sx={{
                   width: { xs: "240px", sm: "500px", lg: "600px" },
+                  backgroundColor: !mode ? "hsl(0, 0%, 13%)" : "white",
                 }}
               />
             </ThemeProvider>
@@ -193,14 +192,13 @@ function Comments({ blogId, mode }) {
                 <Stack
                   spacing={3}
                   sx={{
-                    alignItems: "center",
-                    justifyContent: "center",
                     marginTop: "40px",
                     padding: { xs: "30px" },
+                    width: {sm:"90%",lg:"50%"},
                   }}
                 >
                   <Stack
-                    spacing={{ xs: 1.2, lg: 20 }}
+                    spacing={{ xs: 1.2, lg: 8 }}
                     direction="row"
                     sx={{ alignItems: "center" }}
                   >
@@ -208,41 +206,45 @@ function Comments({ blogId, mode }) {
                       src={comment.user.photo}
                       alt="userPhoto"
                       sx={{
-                        width: "40px",
-                        height: "40px",
+                        width: 40,
+                        height: 40,
                       }}
                     />
                     <Typography variant="body2">
                       <b>{comment.user.name}</b>
                     </Typography>
+                    <Typography sx={{ opacity: "60%" }}>
+                      {timeAgo(comment.timestamp)}
+                    </Typography>
                     {comment.user.id === auth.currentUser.uid && (
-                      <IconButton
+                      <Button
                         onClick={() => {
                           console.log("Comment ID being passed:", comment.id);
                           deleteHandler(comment.id);
                         }}
+                        sx={{
+                          color: "hsl(0, 100%, 40%)",
+                          "&:hover": {
+                            backgroundColor: "none",
+                          },
+                        }}
+                        startIcon={
+                          <DeleteIcon sx={{ color: "hsl(0, 100%, 40%)" }} />
+                        }
                       >
-                        <DeleteIcon sx={{ color: mode ? "black" : "white" }} />
-                      </IconButton>
+                        Delete
+                      </Button>
                     )}
                   </Stack>
 
-                  <Stack sx={{ textAlign: "center" }}>
-                    <Typography sx={{ opacity: "60%" }}>
-                      {timeAgo(comment.timestamp)}
-                    </Typography>
-                    <Box sx={{ display: "flex", justifyContent: "center" }}>
-                      <Typography
-                        variant="subtitle1"
-                        sx={{
-                          textAlign: "justify",
-                          width: { lg: "50%" },
-                        }}
-                      >
-                        {comment.comments}
-                      </Typography>
-                    </Box>
-                  </Stack>
+                  <Typography
+                    variant="subtitle1"
+                    sx={{
+                      textAlign: "justify",
+                    }}
+                  >
+                    {comment.comments}
+                  </Typography>
                 </Stack>
               </React.Fragment>
             );

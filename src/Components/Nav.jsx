@@ -50,11 +50,15 @@ function Nav({ loggedIn, setLoggedIn, mode, setMode }) {
         sx={{
           padding: 1.2,
           backgroundColor:
-            location.pathname === "/" || !mode ? "transparent" : "transparent",
+            location.pathname === "/"
+              ? "transparent"
+              : !mode
+              ? "hsl(0, 0%, 15%)"
+              : "white",
           color: location.pathname === "/" || !mode ? "white" : "black",
           position: location.pathname === "/" ? "absolute" : "fixed",
         }}
-        elevation={0}
+        elevation={location.pathname === "/" ? 0 : 4}
       >
         <Toolbar>
           <ThemeProvider theme={font}>

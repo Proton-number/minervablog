@@ -14,6 +14,7 @@ import { motion } from "framer-motion";
 import Forgotpassword from "./Components/Forgotpassword";
 import { useLocalStorage } from "@uidotdev/usehooks";
 
+
 function App() {
   const [loggedIn, setLoggedIn] = useState(localStorage.getItem("loggedIn"));
   const [mode, setMode] = useLocalStorage("theme", true);
@@ -44,6 +45,7 @@ function App() {
             loggedIn={loggedIn}
             setLoggedIn={setLoggedIn}
           />
+        
           <Routes>
             <Route
               exact

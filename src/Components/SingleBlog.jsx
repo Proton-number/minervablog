@@ -113,6 +113,9 @@ function SingleBlog({ mode }) {
             sm: "60px",
             lg: "100px",
           },
+          marginTop: {
+            xs: "30px",
+          },
         }}
       >
         <Typography variant="h3" sx={{ textAlign: "center" }}>
@@ -134,6 +137,7 @@ function SingleBlog({ mode }) {
             }}
             src={singleBlog.mainImage.asset.url}
             alt={singleBlog.mainImage.alt}
+            loading='lazy'
           />
         </Box>
 

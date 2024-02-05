@@ -45,9 +45,9 @@ function Blogs({ mode }) {
   return (
     <Box
       component={motion.div}
-      initial={{ opacity: 0, y: 50 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.2, duration: 1 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.2, duration: 0.8 }}
       sx={{ backgroundColor: !mode ? "hsl(0, 0%, 15%)" : "white" }}
     >
       <Grid
