@@ -14,6 +14,7 @@ import { useLocalStorage } from "@uidotdev/usehooks";
 import React, { useState, useEffect } from "react";
 import { auth, db } from "../Config/Firebase";
 import DeleteIcon from "@mui/icons-material/Delete";
+import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import {
   addDoc,
   collection,
@@ -193,8 +194,7 @@ function Comments({ blogId, mode }) {
                   spacing={3}
                   sx={{
                     marginTop: "40px",
-                    padding: { xs: "30px" },
-                    width: {sm:"90%",lg:"50%"},
+                    width: { sm: "90%", lg: "50%" },
                   }}
                 >
                   <Stack
@@ -229,7 +229,9 @@ function Comments({ blogId, mode }) {
                           },
                         }}
                         startIcon={
-                          <DeleteIcon sx={{ color: "hsl(0, 100%, 40%)" }} />
+                          <DeleteOutlineRoundedIcon
+                            sx={{ color: "hsl(0, 100%, 60%)" }}
+                          />
                         }
                       >
                         Delete

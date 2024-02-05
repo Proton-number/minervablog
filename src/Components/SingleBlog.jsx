@@ -71,9 +71,9 @@ function SingleBlog({ mode }) {
               src={imageUrl}
               alt={node.alt}
               sx={{
-                width: { xs: "350px", sm: "450px", lg: "900px" },
+                width: { xs: "320px", sm: "450px", lg: "900px" },
                 height: "auto",
-              }} // Adjust styles as needed
+              }} 
             />
           </Box>
         );
@@ -109,12 +109,12 @@ function SingleBlog({ mode }) {
         spacing={3}
         sx={{
           padding: {
-            xs: "50px",
+            xs: "15px",
             sm: "60px",
             lg: "100px",
           },
           marginTop: {
-            xs: "30px",
+            xs: "40px",
           },
         }}
       >
@@ -137,7 +137,7 @@ function SingleBlog({ mode }) {
             }}
             src={singleBlog.mainImage.asset.url}
             alt={singleBlog.mainImage.alt}
-            loading='lazy'
+            loading="lazy"
           />
         </Box>
 

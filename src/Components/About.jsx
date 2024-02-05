@@ -3,17 +3,16 @@ import sanityClient from "../client";
 import { useParams } from "react-router-dom";
 import imageUrlBuilder from "@sanity/image-url";
 import BlockContent from "@sanity/block-content-to-react";
-import { bouncy } from "ldrs";
 import { Box, Stack, Typography } from "@mui/material";
-
+import { motion } from "framer-motion";
+import Loader from "./Loader";
 const builder = imageUrlBuilder(sanityClient);
 function urlFor(source) {
   return builder.image(source);
 }
 
-function About({mode}) {
+function About({ mode }) {
   const [author, setAuthor] = useState(null);
-  bouncy.register();
 
   const { authorId } = useParams();
 
@@ -35,9 +34,9 @@ function About({mode}) {
 
   if (!author)
     return (
-      <Box>
-        <l-bouncy size="45" speed="1.75"  color={mode ? "black" : "white"}></l-bouncy>
-      </Box>
+      <>
+        <Loader mode={mode} />
+      </>
     );
 
   // STYLING THE IMAGE IN BLOCK CONTENT
@@ -79,6 +78,8 @@ function About({mode}) {
     <Stack
       spacing={3}
       sx={{
+        backgroundColor: !mode ? "hsl(0, 0%, 15%)" : "white",
+        color: mode ? "black" : "white",
         padding: {
           xs: "50px",
           sm: "60px",

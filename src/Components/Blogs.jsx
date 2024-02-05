@@ -48,7 +48,10 @@ function Blogs({ mode }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.2, duration: 0.8 }}
-      sx={{ backgroundColor: !mode ? "hsl(0, 0%, 15%)" : "white" }}
+      sx={{
+        backgroundColor: !mode ? "hsl(0, 0%, 15%)" : "white",
+        marginTop: { sm: "30px", lg: "50px" },
+      }}
     >
       <Grid
         columns={{ sm: 7, lg: 10 }}
