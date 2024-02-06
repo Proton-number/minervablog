@@ -20,7 +20,6 @@ import {
   signInWithEmailAndPassword,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { bouncy } from "ldrs";
 import EmailIcon from "@mui/icons-material/Email";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
@@ -46,8 +45,6 @@ function Register({ setLoggedIn, mode }) {
   const navigate = useNavigate();
   const [loading, isLoading] = useState(true);
 
-  bouncy.register();
-
   const btnHandler = async () => {
     try {
       await signInWithPopup(auth, googleProvider).then((result) => {
@@ -58,7 +55,7 @@ function Register({ setLoggedIn, mode }) {
     } catch (err) {
       console.log(err);
       if (err.code === "auth/account-exists-with-different-credential") {
-        alert(
+        setNotSuccess(
           "An account with this Google address already exists. Please sign in using the same method."
         );
       }
@@ -73,10 +70,18 @@ function Register({ setLoggedIn, mode }) {
       navigate("/blog");
     } catch (err) {
       console.log(err);
-      if (err.code === "auth/email-already-in-use") {
-        alert(
-          "The email address is already in use. Please use a different email."
-        );
+      switch (err.code) {
+        case "auth/email-already-in-use":
+          setNotSuccess(
+            "The email address is already in use. Please use a different email."
+          );
+          break;
+        case "auth/invalid-credential":
+          setNotSuccess("invalid-credential.");
+          break;
+        default:
+          setNotSuccess(false);
+          break;
       }
     }
     if (signUp.email.trim() === "" || !signUp.email.includes("@")) {
@@ -100,8 +105,12 @@ function Register({ setLoggedIn, mode }) {
       navigate("/blog");
     } catch (err) {
       console.log(err);
-      if (err.code === "auth/invalid-credential") {
-        alert("Invalid Email or Password.");
+      if (
+        err.code === "auth/invalid-credential" ||
+        "auth/invalid-email" ||
+        "auth/missing-password"
+      ) {
+        setNotSuccess("Invalid Email or Password.");
       }
     }
     if (login.email.trim() === "" || !login.email.includes("@")) {
@@ -134,6 +143,7 @@ function Register({ setLoggedIn, mode }) {
 
   const [loginShowPassword, loginSetShowPassword] = useState(true);
   const [signUpShowPassword, signUpSetShowPassword] = useState(true);
+  const [notSuccess, setNotSuccess] = useState(false);
 
   return (
     <>
@@ -142,7 +152,8 @@ function Register({ setLoggedIn, mode }) {
           <Loader mode={mode} />
         </>
       ) : (
-        <Box
+        <Stack
+          spacing={4}
           component={motion.div}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -160,6 +171,19 @@ function Register({ setLoggedIn, mode }) {
           }}
         >
           <ThemeProvider theme={signupFont}>
+            {notSuccess && (
+              <Box
+                component={motion.div}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3, duration: 1 }}
+              >
+                <Alert variant="filled" severity="error">
+                  {notSuccess}
+                </Alert>
+              </Box>
+            )}
+
             <Paper
               elevation={8}
               sx={{
@@ -305,6 +329,7 @@ function Register({ setLoggedIn, mode }) {
                           borderRadius: "20px",
                           width: "60%",
                           padding: "10px",
+                          color: mode ? "black" : "white",
                           backgroundColor: "hsl(182, 56%, 58%)",
                           "&:hover": { backgroundColor: "hsl(184, 49%, 45%)" },
                         }}
@@ -513,6 +538,7 @@ function Register({ setLoggedIn, mode }) {
                           borderRadius: "20px",
                           width: "60%",
                           padding: "10px",
+                          color: mode ? "black" : "white",
                           backgroundColor: "hsl(182, 56%, 58%)",
                           "&:hover": { backgroundColor: "hsl(184, 49%, 45%)" },
                         }}
@@ -564,7 +590,10 @@ function Register({ setLoggedIn, mode }) {
                     <Typography>
                       Don't have an account?
                       <span
-                        onClick={() => setShowLogin(false)}
+                        onClick={() => {
+                          setError(true);
+                          setShowLogin(false);
+                        }}
                         style={{
                           color: "hsl(184, 49%, 45%)",
                           cursor: "pointer",
@@ -579,7 +608,7 @@ function Register({ setLoggedIn, mode }) {
               </Stack>
             </Paper>
           </ThemeProvider>
-        </Box>
+        </Stack>
       )}
     </>
   );
