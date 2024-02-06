@@ -96,6 +96,8 @@ function Nav({ loggedIn, setLoggedIn, mode, setMode }) {
               style={{
                 textDecoration: "none",
                 color: location.pathname === "/" || !mode ? "white" : "black",
+                textDecoration:
+                  location.pathname === "/" ? "underline" : "none",
               }}
             >
               <Typography variant="h6" sx={{ cursor: "pointer" }}>
@@ -109,6 +111,8 @@ function Nav({ loggedIn, setLoggedIn, mode, setMode }) {
                 style={{
                   textDecoration: "none",
                   color: location.pathname === "/" || !mode ? "white" : "black",
+                  textDecoration:
+                    location.pathname === "/signUp" ? "underline" : "none",
                 }}
               >
                 <Typography variant="h6" sx={{ cursor: "pointer" }}>

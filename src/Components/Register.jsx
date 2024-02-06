@@ -10,6 +10,7 @@ import {
   Paper,
   Divider,
   IconButton,
+  Alert,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { signInWithPopup } from "firebase/auth";
@@ -58,7 +59,7 @@ function Register({ setLoggedIn, mode }) {
       console.log(err);
       if (err.code === "auth/account-exists-with-different-credential") {
         alert(
-          "An account with this Google email address already exists. Please sign in using the same method."
+          "An account with this Google address already exists. Please sign in using the same method."
         );
       }
     }

@@ -7,6 +7,7 @@ import {
   Paper,
   createTheme,
   ThemeProvider,
+  Alert,
 } from "@mui/material";
 import { motion } from "framer-motion";
 import { auth } from "../Config/Firebase";
@@ -17,6 +18,8 @@ import LoadingButton from "@mui/lab/LoadingButton";
 function Forgotpassword({ mode }) {
   const [email, setEmail] = useState("");
   const [sending, setSending] = useState(false); //for loading animaion for button
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(null);
 
   const navigate = useNavigate();
 
@@ -25,11 +28,17 @@ function Forgotpassword({ mode }) {
 
     await sendPasswordResetEmail(auth, email)
       .then((result) => {
-        alert("Check your email for the password reset link");
-        navigate("/signUp");
+        setSuccess(true);
+        setEmail("");
+
+        setTimeout(() => {
+          // Navigate after 3 seconds
+          navigate("/signUp");
+        }, 2500);
       })
       .catch((error) => {
         console.error(error.code, error.message);
+        setError(error.code);
       })
       .finally(() => {
         setSending(false);
@@ -45,7 +54,8 @@ function Forgotpassword({ mode }) {
   });
 
   return (
-    <Box
+    <Stack
+      spacing={4}
       sx={{
         display: "flex",
         justifyContent: "center",
@@ -55,6 +65,30 @@ function Forgotpassword({ mode }) {
         color: !mode ? "black" : "white",
       }}
     >
+      {success && (
+        <Box
+          component={motion.div}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+        >
+          <Alert variant="filled" severity="success">
+            Check your Email for a reset link
+          </Alert>
+        </Box>
+      )}
+      {error && !success && (
+        <Box
+          component={motion.div}
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 1 }}
+        >
+          <Alert variant="filled" severity="error">
+            {error}
+          </Alert>
+        </Box>
+      )}
       <Paper
         elevation={4}
         sx={{
@@ -108,7 +142,7 @@ function Forgotpassword({ mode }) {
           </LoadingButton>
         </Stack>
       </Paper>
-    </Box>
+    </Stack>
   );
 }
 
