@@ -43,6 +43,9 @@ function SingleBlog({ mode }) {
       )
       .then((data) => {
         setTimeout(() => setSingleBlog(data[0]), 1000);
+        if (data[0]?.title) {
+          document.title = data[0].title;
+        }
       })
       .catch(console.error);
   }, [slug]);
@@ -73,7 +76,7 @@ function SingleBlog({ mode }) {
               sx={{
                 width: { xs: "320px", sm: "450px", lg: "900px" },
                 height: "auto",
-              }} 
+              }}
             />
           </Box>
         );

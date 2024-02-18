@@ -20,7 +20,7 @@ function App() {
 
   return (
     <>
-      {/* <LoadingComponent /> */}
+      <LoadingComponent />
       <Box
         component={motion.div}
         initial={{ opacity: 0 }}
